@@ -10,20 +10,28 @@ if (isset($_POST["regbt"])) {
 
 
 
-    $sql = "INSERT INTO `registration`(`fname`, `uname`, `email`, `phno`, `pass`) VALUES ('$fname','$uname','$email','$phono','$psw')";
-    $res = mysqli_query($con, $sql);
-    if ($res > 0) {
-        $fetchId = "SELECT * FROM `registration` WHERE `email`='$email'";
-        $result = mysqli_query($con, $fetchId);
-        $row = mysqli_fetch_assoc($result);
-        $uid = $row['uid'];
-
-        mysqli_query($con, "INSERT INTO `tbl_login`(`uid`, `username`, `password`, `user_type`) VALUES('$uid','$uname','$psw','2')");
-
-        header('location:Login.php');
-    } else {
-        echo "not inserted";
-    }
+    
+    $resultset = mysqli_query($con,"select * from `registration` where `uname`='$uname'");
+    $count = mysqli_num_rows($resultset);
+       if($count == 0)
+        {
+            $sql = "INSERT INTO `registration`(`fname`, `uname`, `email`, `phno`, `pass`) VALUES ('$fname','$uname','$email','$phono','$psw')";
+            $res = mysqli_query($con, $sql);
+            if ($res > 0) {
+                $fetchId = "SELECT * FROM `registration` WHERE `email`='$email'";
+                $result = mysqli_query($con, $fetchId);
+                $row = mysqli_fetch_assoc($result);
+                $uid = $row['uid'];
+        
+                mysqli_query($con, "INSERT INTO `tbl_login`(`uid`, `username`, `password`, `user_type`) VALUES('$uid','$uname','$psw','2')");
+        
+                header('location:Login.php');
+            } else {
+                echo "not inserted";
+            }
+        }else{
+           echo "The user is already present in the employee table" ;
+        }
 }
 
 ?>
