@@ -38,7 +38,7 @@ include('header.php');
 				
 			
 		</div>				
-		<div class="listview_1_of_3 images_1_of_3">
+		<div class="listview_1_of_3 images_1_of_3" style="margin-left: 8%;">
 					<h2 style="color:#555;">Movie Trailers</h2>
 						<div class="middle-list">
 					<?php 

@@ -47,7 +47,7 @@ include('header.php');
                     <div class="tools">
                       <button class="fa fa-wrench" onclick="re(<?php echo $c['movie_id']; ?>)"></button>
 
-            <!--          <button class="fa fa-trash-o" onclick="del(<?php echo $c['movie_id']; ?>)"></button>   -->
+                      <button class="fa fa-trash-o" onclick="del(<?php echo $c['movie_id']; ?>)"></button>  
                     </div>
                   </li>
               <?php
@@ -161,7 +161,7 @@ include('header.php');
                     <div class="tools">
                     <button class="fa fa-wrench" onclick="ue(<?php echo $c['news_id']; ?>)"></button>
 
-                      <button class="fa fa-trash-o" onclick="del(<?php echo $c['news_id']; ?>)"></button>
+                    <button class="fa fa-trash-o" onclick="umDel(<?php echo $c['news_id']; ?>)"></button>
                     </div>
                   </li>
               <?php
@@ -189,6 +189,12 @@ include('footer.php');
   function del(m) {
     if (confirm("Are you want to delete this movie") == true) {
       window.location = "process_delete_movie.php?mid=" + m;
+    }
+  }
+
+  function umDel(m) {
+    if (confirm("Are you want to delete this movie") == true) {
+      window.location = "process_delete_UpcomingMovie.php?mid=" + m;
     }
   }
 

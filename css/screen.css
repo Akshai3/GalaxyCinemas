@@ -1,0 +1,224 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.p {
+    margin-top: 6px;
+    margin-bottom: 7px;
+}
+
+#titlebar {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: rgb(60, 4, 65);
+    color: azure;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-top: 10px;
+    line-height: 20px;
+    margin: 0px;
+    z-index: 1;
+}
+
+#Number_of_tickets {
+
+    position: fixed;
+    right: 25px;
+    top: 23px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: rgb(60, 4, 65);
+    font: bolder;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1;
+
+}
+
+#cost_of_tickets {
+
+    position: fixed;
+    right: 25px;
+    top: 58px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: rgb(60, 4, 65);
+    font: bolder;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1;
+
+}
+
+#Date_and_time {
+    background-color: black;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    padding: 10px;
+    padding-left: 20px;
+    z-index: 1;
+}
+
+#executive {
+    padding-left: 110px;
+
+}
+
+#premium {
+    padding-left: 110px;
+}
+
+.screenContain {
+    width: 50%;
+    perspective: 1000px;
+    
+    margin-left: 20%;
+}
+
+.screen {
+    background-color: skyblue;
+    height: 120px;
+    width: 100%;
+    margin: 15px 0;
+    transform: rotateX(-48deg);
+    box-shadow: 0 3px 10px darkblue;
+}
+
+.screen .text {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color:black;
+    transform:scale(1.2);
+}
+
+
+.button {
+    border: 1px;
+    border-color: dimgray;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: #4CAF50;
+    /* Green */
+    color: white;
+
+}
+
+.taken {
+    border: 1px;
+    border-color: dimgray;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    transition-duration: 0.4s;
+    background-color: rgb(145, 145, 145);
+}
+
+.taken:hover {
+    background-color: rgb(196, 32, 32);
+    /* Green */
+    color: white;
+
+}
+
+.selected {
+
+    border: 1px;
+    border-color: dimgray;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    transition-duration: 0.4s;
+    background-color: #4CAF50 !important;
+    /* Green */
+    color: white;
+}
+
+#book {
+    position: relative;
+    margin: 10px;
+    background-color: rgb(52, 52, 214);
+    border: 0px;
+    border-radius: 3px;
+    width: 150px;
+    height: 50px;
+    color: white;
+    font-size: 15px;
+    left: 43.8%;
+    box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.2);
+    transition-duration: 0.5s;
+
+
+}
+
+#book:hover {
+    background-color: rgb(40, 40, 180);
+
+    box-shadow: 0px 0px 0px 0 rgba(252, 252, 252, 0.2);
+}
+
+.bottomDock {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    position: fixed;
+    width: 100%;
+    
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 3px 6px 3px rgba(0, 0, 0, 0.2), 0 3px 6px 12px rgba(0, 0, 0, 0.19);
+    align-content: center;
+    transition-duration: 1s;
+
+}
+
+
+.seat {
+    height: 20px;
+    width: 20px;
+    border: 1px;
+    border-color: dimgray;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    transition-duration: 0.4s;
+    background-color: rgb(145, 145, 145);
+}
+
+.seat.selected {
+    background-color: green;
+}
+
+.seat.occupied {
+    background-color: #353344;
+}
+
+
+
+.showcase {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #777;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+   margin-left: 25%;
+}
+
+.showcase li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+}
+
+.showcase li small {
+    margin-left: 10px;
+}

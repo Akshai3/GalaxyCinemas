@@ -7,31 +7,27 @@ if (isset($_POST["regbt"])) {
     $email = $_POST["mail"];
     $phono = $_POST["phn"];
     $psw = md5($_POST["psw"]);
-
-
-
     
-    $resultset = mysqli_query($con,"select * from `registration` where `uname`='$uname'");
+    $resultset = mysqli_query($con, "select * from `registration` where `uname`='$uname'");
     $count = mysqli_num_rows($resultset);
-       if($count == 0)
-        {
-            $sql = "INSERT INTO `registration`(`fname`, `uname`, `email`, `phno`, `pass`) VALUES ('$fname','$uname','$email','$phono','$psw')";
-            $res = mysqli_query($con, $sql);
-            if ($res > 0) {
-                $fetchId = "SELECT * FROM `registration` WHERE `email`='$email'";
-                $result = mysqli_query($con, $fetchId);
-                $row = mysqli_fetch_assoc($result);
-                $uid = $row['uid'];
-        
-                mysqli_query($con, "INSERT INTO `tbl_login`(`uid`, `username`, `password`, `user_type`) VALUES('$uid','$uname','$psw','2')");
-        
-                header('location:Login.php');
-            } else {
-                echo "not inserted";
-            }
-        }else{
-           echo "The user is already present in the employee table" ;
+    if ($count == 0) {
+        $sql = "INSERT INTO `registration`(`fname`, `uname`, `email`, `phno`, `pass`) VALUES ('$fname','$uname','$email','$phono','$psw')";
+        $res = mysqli_query($con, $sql);
+        if ($res > 0) {
+            $fetchId = "SELECT * FROM `registration` WHERE `email`='$email'";
+            $result = mysqli_query($con, $fetchId);
+            $row = mysqli_fetch_assoc($result);
+            $uid = $row['uid'];
+
+            mysqli_query($con, "INSERT INTO `tbl_login`(`uid`, `username`, `password`, `user_type`) VALUES('$uid','$uname','$psw','2')");
+
+            header('location:Login.php');
+        } else {
+            echo "not inserted";
         }
+    } else {
+        echo "The user name already exists";
+    }
 }
 
 ?>
@@ -162,16 +158,16 @@ if (isset($_POST["regbt"])) {
                             <div class="txt_field">
                                 <label>Full Name</label>
                                 <div class="input-container">
-                                <i class="fa fa-user icon"></i>
-                                <input class="input-field" type="text" name="fn" id="fnn" placeholder="full name" required="">
+                                    <i class="fa fa-user icon"></i>
+                                    <input class="input-field" type="text" name="fn" id="fnn" placeholder="full name" required="">
                                 </div>
                             </div>
 
                             <div class="txt_field">
                                 <label>Username</label>
                                 <div class="input-container">
-                                <i class="fa fa-user icon"></i>
-                                <input class="input-field" type="text" name="un" id="unn" placeholder="username" required="">
+                                    <i class="fa fa-user icon"></i>
+                                    <input class="input-field" type="text" name="un" id="unn" placeholder="username" required="">
                                 </div>
                             </div>
                         </div>
@@ -180,34 +176,34 @@ if (isset($_POST["regbt"])) {
                             <div class="txt_field">
                                 <label>Email</label>
                                 <div class="input-container">
-                                <i class="fa fa-envelope icon"></i>
-                                <input class="input-field" type="text" name="mail" id="em1" placeholder="email" required="">
+                                    <i class="fa fa-envelope icon"></i>
+                                    <input class="input-field" type="text" name="mail" id="em1" placeholder="email" required="">
                                 </div>
                             </div>
 
                             <div class="txt_field">
                                 <label>Phone No</label>
                                 <div class="input-container">
-                                <i class="fa fa-phone icon"></i>
-                                <input class="input-field" type="number" name="phn" id="ph1" placeholder="phone no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" title="Phone Number Must contain 10 digits and first letters should be 6 , 7 , 8 , or 9" required="">
+                                    <i class="fa fa-phone icon"></i>
+                                    <input class="input-field" type="number" name="phn" id="ph1" placeholder="phone no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" title="Phone Number Must contain 10 digits and first letters should be 6 , 7 , 8 , or 9" required="">
+                                </div>
                             </div>
-                        </div>
                         </div>
 
                         <div class="subField">
                             <div class="txt_field">
                                 <label>Password</label>
                                 <div class="input-container">
-                                <i class="fa fa-key icon"></i>
-                                <input class="input-field" type="password" name="psw" id="ps1" placeholder="password" onfocus="myfunction()" onblur="my2function()" onkeyup="my33function()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required="">
+                                    <i class="fa fa-key icon"></i>
+                                    <input class="input-field" type="password" name="psw" id="ps1" placeholder="password" onfocus="myfunction()" onblur="my2function()" onkeyup="my33function()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required="">
                                 </div>
                             </div>
 
                             <div class="txt_field">
                                 <label>Confirm Password</label>
                                 <div class="input-container">
-                                <i class="fa fa-key icon"></i>
-                                <input class="input-field" type="password" name="cpsw" id="ps2" placeholder="confirm password" required="">
+                                    <i class="fa fa-key icon"></i>
+                                    <input class="input-field" type="password" name="cpsw" id="ps2" placeholder="confirm password" required="">
                                 </div>
                             </div>
                         </div>

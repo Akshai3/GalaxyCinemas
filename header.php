@@ -10,6 +10,7 @@ date_default_timezone_set('Asia/Kathmandu');
 <head>
 	<title>GCTB</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="css/text.css">
 	<link rel="stylesheet" href="css/mainstyle.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="all" />
 	<link type="text/css" rel="stylesheet" href="http://www.dreamtemplate.com/dreamcodes/tabs/css/tsc_tabs.css" />
