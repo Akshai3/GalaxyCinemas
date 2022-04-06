@@ -33,6 +33,7 @@ date_default_timezone_set('Asia/Kathmandu');
 					<ul class="group" id="example-one">
 						<li><a href="index.php">Home</a></li>
 						<li><a href="movies_events.php">Movies</a></li>
+						<li><a href="snacks.php">Snacks</a></li>
 						<li><?php if (isset($_SESSION['loginstat'])) {
 								$us = mysqli_query($con, "select * from registration where uid='" . $_SESSION['uid'] . "'");
 								$user = mysqli_fetch_array($us); ?><a href="profile.php"><?php echo $user['uname']; ?></a><a href="logout.php">Logout</a><?php } else { ?><a href="login.php">Login</a><?php } ?></li>

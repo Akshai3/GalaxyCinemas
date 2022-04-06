@@ -155,6 +155,17 @@ $theatre = mysqli_fetch_array($th);
               </span>
             </a>
           </li>
+
+          <li class="treeview">
+            <a href="manage_snacks.php">
+              <i class="fa fa-ticket"></i> <span>Manage Snacks</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+          </li>
+
+
           <li class="treeview">
             <a href="todays_shows.php">
               <i class="fa fa-calendar"></i> <span>Todays Shows</span>
