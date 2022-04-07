@@ -1,60 +1,17 @@
 <html>
 
 <head>
-  <?php
-  session_start();
-  include('connect.php');
-  $_SESSION['sid'];
-  $_SESSION['tid'];
-  $_SESSION['stid'];
-  $_SESSION['screen_id'];
-  $s = mysqli_query($con, "select * from tbl_shows where s_id='" . $_SESSION['sid'] . "'");
-  $shw = mysqli_fetch_array($s);
-  $t = mysqli_query($con, "select * from tbl_theatre where id='" . $_SESSION['tid'] . "'");
-  $theatre = mysqli_fetch_array($t);
-  $ttm = mysqli_query($con, "select  * from tbl_show_time where st_id='" . $_SESSION['stid'] . "'");
-  $ttme = mysqli_fetch_array($ttm);
-  $sn = mysqli_query($con, "select  * from tbl_screens where screen_id='" . $_SESSION['screen_id'] . "'");
-  $screen = mysqli_fetch_array($sn);
-  $data = "";
-  $list = array();
-  extract($_GET);
-
-  if (isset($db)) {
-    $checkstr = "SELECT 1 from " . $moviename . ";";
-    $check = mysqli_query($db, $checkstr);
-    if ($check !== FALSE) {
-      for ($i = 0; $i < 14; $i++) {
-        for ($j = 0; $j <= 14; $j++) {
-          $seatname = chr($i + 65) . $j;
-          $checkseat = "SELECT * FROM " . $moviename . " WHERE seatname='" . $seatname . "';";
-          $query = mysqli_query($db, $checkseat);
-          if (mysqli_num_rows($query) >= 1) {
-          } else {
-            $inserting = "INSERT INTO " . $moviename . " (seatname) VALUES('" . $seatname . "');";
-            $res = mysqli_query($db, $inserting);
-            if ($i == 0 || ($i == 12 && $j % 2 == 0) || ($i == 3) || ($j == 3 && $i % 3 == 0)) {
-              $altering = "UPDATE " . $moviename . " SET status='OCCUPIED' WHERE seatname='" . $seatname . "';";
-              $query = mysqli_query($db, $altering);
-            } else {
-              $altering = "UPDATE " . $moviename . " SET status='UNOCCUPIED' WHERE seatname='" . $seatname . "';";
-              $query = mysqli_query($db, $altering);
-            }
-          }
-        }
-      }
-      $str2 = mysqli_query($db, "SELECT * FROM " . $moviename . ";");
-      while ($rows = mysqli_fetch_assoc($str2)) {
-        $data .= $rows["seatname"] . ":" . $rows["status"] . ";";
-      }
-    } else {
-      $str1 = "CREATE TABLE " . $moviename . " (seatname varchar(255) NOT NULL ,status varchar(255) NOT NULL);";
-      $res = mysqli_query($db, $str1);
-      $str = "ALTER TABLE " . $moviename . " ALTER status SET DEFAULT 'UNOCCUPIED';";
-      $res = mysqli_query($db, $str);
-    }
-  }
-  ?>
+<?php session_start();
+if ($_SESSION['id']== session_id())
+{
+$source = $_SESSION["select1"];
+$destination =  $_SESSION["select2"];
+$user = $_SESSION["user"];
+include "database.php";
+$query = "SELECT `seats` FROM `tbl_seats` WHERE rfrom = '$source' and rto = '$destination' and status = 1 ORDER BY seat ASC";
+$result1 = mysqli_query($conn, $query);
+include "header.php";
+?>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Book Tickets</title>
@@ -62,153 +19,7 @@
   <meta http-equiv="refresh" content="1000">
 
   <link rel="stylesheet" type="text/css" media="screen" href="css/screen.css" />
-  <script type="text/javascript">
-    var ids = new Array();
-
-    function add_buttons() {
-      var seats = "<?php echo $data; ?>";
-      datalist = new Array();
-      totaldata = seats.split(';');
-      for (var i = 0; i < totaldata.length; i++) {
-        seatname = totaldata[i].split(':')[0];
-        status = totaldata[i].split(':')[1];
-        datalist[seatname] = status;
-      }
-      var bill = document.getElementById("cost_of_tickets");
-      bill.innerText = "Bill amount : " + String.fromCharCode(8377) + String(0);
-      var dock = document.getElementById("bottom_dock");
-      dock.style.display = "none";
-
-
-
-
-      var seat_matrix = new Array(10);
-      for (var i = 0; i < 14; i++) {
-        seat_matrix[i] = new Array(10);
-      }
-      var pre = document.getElementById("premium");
-      var exe = document.getElementById("executive");
-      for (var i = 0; i < 3; i++) {
-
-        for (var j = 0; j < 14; j++) {
-
-          seat_matrix[i][j] = document.createElement("button");
-          seat_matrix[i][j].id = String.fromCharCode(65 + i) + String(j + 1);
-          ids.push(String.fromCharCode(65 + i) + String(j + 1));
-          pre.appendChild(seat_matrix[i][j]);
-
-
-          var tempid = String.fromCharCode(65 + i) + String(j + 1);
-          var temp = document.getElementById(tempid);
-          seat_matrix[i][j].innerText = String(j + 1);
-
-
-          if (datalist[tempid] == "UNOCCUPIED") {
-            temp.className = "button";
-          } else {
-            temp.className = "taken";
-          }
-          if (j == 6) {
-            pre.innerHTML = pre.innerHTML + "&emsp;" + "&emsp;" + "&emsp;" + "&emsp;";
-          }
-
-          pre.innerHTML = pre.innerHTML + "&emsp;" + "&emsp;";
-
-        }
-        pre.innerHTML = pre.innerHTML + "<br/>" + "<br/>";
-
-      }
-
-
-
-      for (var i = 3; i < 14; i++) {
-        //   pre.innerHTML=pre.innerHTML+String.fromCharCode(65+i)+"&emsp;";
-        for (var j = 0; j < 14; j++) {
-
-          seat_matrix[i][j] = document.createElement("button");
-          seat_matrix[i][j].id = String.fromCharCode(65 + i) + String(j + 1);
-          ids.push(String.fromCharCode(65 + i) + String(j + 1));
-          pre.appendChild(seat_matrix[i][j]);
-
-
-          var tempid = String.fromCharCode(65 + i) + String(j + 1);
-          var temp = document.getElementById(tempid);
-          seat_matrix[i][j].innerText = String(j + 1);
-
-          if (datalist[tempid] == "UNOCCUPIED") {
-            temp.className = "button";
-          } else {
-            temp.className = "taken";
-          }
-          //seat_matrix[i][j].style="border: 1px;border-color: dimgray;height:40px;width:40px;box-shadow: 0 6px 6px 0 rgba(0,0,0,0.2), 0 6px 6px 0 rgba(0,0,0,0.19);"
-          exe.appendChild(seat_matrix[i][j]);
-          if (j == 6) {
-            exe.innerHTML = exe.innerHTML + "&emsp;" + "&emsp;" + "&emsp;" + "&emsp;";
-          }
-          exe.innerHTML = exe.innerHTML + "&emsp;" + "&emsp;";
-
-        }
-        exe.innerHTML = exe.innerHTML + "<br/>" + "<br/>";
-
-      }
-      console.log(ids);
-
-      function func2(event) {
-        var no = document.getElementById("Number_of_tickets");
-        var bill = document.getElementById("cost_of_tickets");
-
-        console.log(no.innerText);
-        console.log(bill.innerText);
-        // no.style.backgroundColor="rgb(92, 43, 97)";
-        var counter = parseInt(no.innerText.split(':')[1]);
-        var sum = parseInt(bill.innerText.split(String.fromCharCode(8377))[1]);
-        console.log("before" + counter);
-        if (event.target.className == "button") {
-          event.target.className = "selected";
-          counter++;
-          if (event.currentTarget.parentNode.id == "premium")
-            sum += 250;
-          else
-            sum += 180;
-        } else if (event.target.className == "selected") {
-          event.target.className = "button";
-          counter--;
-          if (event.currentTarget.parentNode.id == "premium")
-            sum -= 250;
-          else
-            sum -= 180;
-        }
-
-        console.log("after" + counter);
-        if (counter != 0) {
-          dock.style.display = "block";
-        } else {
-          dock.style.display = "block";
-        }
-        no.innerText = "Number of tickets : " + String(counter);
-        bill.innerText = "Bill amount : " + String.fromCharCode(8377) + String(sum);
-        localStorage.setItem("bill", String.fromCharCode(8377) + String(sum));
-        console.log(no.style.innerText);
-      };
-      for (var i = 0; i < 196; i++) {
-        var a = document.getElementById(ids[i]);
-        a.addEventListener("click", func2);
-      }
-    }
-
-    function next_page() {
-      var selected = new Array();
-      for (var i = 0; i < 196; i++) {
-        var a = document.getElementById(ids[i]);
-        if (a.className == "selected") {
-          selected.push(a.id);
-        }
-        localStorage.setItem('selected', selected);
-        localStorage.setItem('movie', name);
-      }
-    }
   
-  </script>
 </head>
 
 <body style="margin-block-start:0px;" onload="add_buttons()">
@@ -261,6 +72,54 @@
 
     <div id="premium">
 
+        
+    <?php
+$q = array();
+$j = 0;
+$temp=0;
+while ($row = mysqli_fetch_array($result1))
+      {
+		  
+        $temp2=0;
+        $q[$j] = $row['seat'];
+        for($i=1;$i<=30;$i++)
+        { 
+          
+          if($temp<$i)
+          
+          {
+
+          
+           if($i==$q[$j])
+           {
+            echo "<div><label class=contain>".$row['seat']."<input type=checkbox name=".$row['seat']." id=".$row['seat']." value =".$row['seat']." checked disabled><span class=checkmark></span></label></div>";    
+              $temp=$i;  
+              $temp2=1; 
+              
+                }
+           else{
+            echo "<div><label class=contain>".$i."<input type=checkbox name=".$i." id=".$i." value =".$i." onclick=setColor('".$i."');><span class=checkmark></span></label></div>";
+          }
+          if($temp2==1)
+          {
+          
+          $count=$temp;
+          break;
+          }
+         
+        }
+  
+        }
+       
+        $j++;
+        }
+        for($z=$temp+1;$z<=30;$z++)
+        {
+          echo "<div><label class=contain>".$z."<input type=checkbox name=".$z." id=".$z." value =".$z." onclick=setColor('".$z."');><span class=checkmark></span></label></div>";
+
+        }       
+        
+?>
     </div>
   </div>
   <div id="seating_executive">
