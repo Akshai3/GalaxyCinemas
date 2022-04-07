@@ -32,16 +32,17 @@ $movie = mysqli_fetch_array($qry2);
           $id = $row['snackId'];
           $cat = $row['snackName'];
           $desc = $row['snackDesc'];
-          echo '<div class="col-xs-3 col-sm-3 col-md-3">
+          $img = $row['image'];?>
+          <div class="col-xs-3 col-sm-3 col-md-3">
                   <div class="card" style="width: 18rem;">
-                    <img src="img/card-'.$id. '.jpg" class="card-img-top" alt="image for this category" width="249px" height="270px">
-                    <div class="card-body">
+                  <img src="images/<?php echo $row['image'];?>">
+                   <?php  echo '<div class="card-body">
                       <h5 class="card-title"><a href="#?catid=' . $id . '">' . $cat . '</a></h5>
                       <p class="card-text">' . substr($desc, 0, 30). '... </p>
-                      <a href="viewPizzaList.php?catid=' . $id . '" class="btn btn-primary">View All</a>
-                    </div>
+                      <a href="#.php?catid=' . $id . '" class="btn btn-primary">View All</a>
+                    </div>';?>
                   </div>
-                </div>';
+                </div> <?php
         }
       ?>
     </div>

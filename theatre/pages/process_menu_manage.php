@@ -3,7 +3,7 @@
     include('../../connect.php');
     if(isset($_POST['createItem'])) {
         $name = $_POST["name"];
-        $description = $_POST["description"];
+        $description = $_POST["desc"];
         $categoryId = $_POST["categoryId"];
         $price = $_POST["price"];
     
@@ -12,7 +12,7 @@
     
     $flname="images/".basename($_FILES["image"]["name"]);
     
-    mysqli_query($con,"INSERT INTO `tbl_snacks` (`snackName`, `snackPrice`, `snackDesc`, `snackCategoryId`, `snackPubDate`) VALUES ('$name', '$price', '$description', '$categoryId', current_timestamp())");   
+    mysqli_query($con,"INSERT INTO `tbl_snacks` (`snackName`, `snackPrice`, `snackDesc`, `image`, `snackCategoryId`, `snackPubDate`) VALUES ('$name', '$price', '$description','$flname', '$categoryId', current_timestamp())");   
     
     move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     

@@ -5,10 +5,11 @@
     
     $target_dir = "../../images/";
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    echo "$target_dir";
     
     $flname="images/".basename($_FILES["image"]["name"]);
     
-    mysqli_query($con,"INSERT INTO `tbl_categories` (`category_name`, `category_desc`, `category_createDate`) VALUES ('$name', '$desc', current_timestamp())");
+    mysqli_query($con,"insert into  tbl_categories values(NULL,'$name','".$_SESSION['theatre']."','$desc','$flname',current_timestamp())");
     
     move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     
