@@ -30,7 +30,7 @@ $frm = new formBuilder;
         <div class="box">
             <div class="box-body">
                 <?php include('../../msgbox.php'); ?>
-                <form action="process_add_movie.php" method="post" enctype="multipart/form-data" id="form1">
+                <form action="process_menu_manage.php" method="post" enctype="multipart/form-data" id="form1">
                     <div class="form-group">
                         <label class="control-label">Name</label>
                         <input type="text" name="name" class="form-control" />
@@ -55,7 +55,15 @@ $frm = new formBuilder;
                         <label class="control-label">Category</label><br>
                         <select name="categoryId" id="categoryId" class="form-control" required>
 						<option hidden disabled selected value>None</option>
-                        
+                        <?php
+                                    $catsql = "SELECT * FROM `tbl_categories`"; 
+                                    $catresult = mysqli_query($con, $catsql);
+                                    while($row = mysqli_fetch_assoc($catresult)){
+                                        $catId = $row['category_id'];
+                                        $catName = $row['category_name'];
+                                        echo '<option value="' .$catId. '">' .$catName. '</option>';
+                                    }
+                                ?>
 						</select>
                     </div>
 
@@ -67,7 +75,7 @@ $frm = new formBuilder;
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success">Create</button>
+                        <button type="submit" name="createItem" class="btn btn-success">Create</button>
                     </div>
                 </form>
             </div>
@@ -82,24 +90,7 @@ $frm = new formBuilder;
 <?php
 include('footer.php');
 ?>
-<script type="text/javascript">
-    $('#screen').change(function() {
-        screen = $(this).val();
-        $.ajax({
-                url: 'get_showtime.php',
-                type: 'POST',
-                data: 'screen=' + screen,
-                dataType: 'html'
-            })
-            .done(function(data) {
-                //console.log(data);	
-                $('#stime').html(data);
-            })
-            .fail(function() {
-                $('#stime').html('<option><i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...</option>');
-            });
-    });
-</script>
+
 <script>
     <?php $frm->applyvalidations("form1"); ?>
 </script>

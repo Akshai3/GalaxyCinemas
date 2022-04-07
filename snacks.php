@@ -36,7 +36,7 @@ $movie = mysqli_fetch_array($qry2);
                   <div class="card" style="width: 18rem;">
                     <img src="img/card-'.$id. '.jpg" class="card-img-top" alt="image for this category" width="249px" height="270px">
                     <div class="card-body">
-                      <h5 class="card-title"><a href="viewPizzaList.php?catid=' . $id . '">' . $cat . '</a></h5>
+                      <h5 class="card-title"><a href="#?catid=' . $id . '">' . $cat . '</a></h5>
                       <p class="card-text">' . substr($desc, 0, 30). '... </p>
                       <a href="viewPizzaList.php?catid=' . $id . '" class="btn btn-primary">View All</a>
                     </div>
