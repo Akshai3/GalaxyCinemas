@@ -7,7 +7,7 @@
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
     echo "$target_dir";
     
-    $flname="images/".basename($_FILES["image"]["name"]);
+    $flname=basename($_FILES["image"]["name"]);
     
     mysqli_query($con,"insert into  tbl_categories values(NULL,'$name','".$_SESSION['theatre']."','$desc','$flname',current_timestamp())");
     

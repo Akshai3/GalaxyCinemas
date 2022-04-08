@@ -32,16 +32,16 @@ include('header.php');
     <?php include('../../msgbox.php');?>
     <form action="process_category.php" method="post" enctype="multipart/form-data" id="form1">
      <!-- Table Panel -->
-     <div class="col-md-8 mb-3">
+     <div class="col-md-12 mb-3">
                 <div class="card">
                     <div class="card-body">
                     <table class="table table-bordered table-hover mb-0">
                         <thead style="background-color: rgb(111 202 203);">
                         <tr>
-                            <th class="text-center" style="width:7%;">Id</th>
+                            <th class="text-center" >Id</th>
                             <th class="text-center">Img</th>
-                            <th class="text-center" style="width:58%;">Category Detail</th>
-                            <th class="text-center" style="width:18%;">Action</th>
+                            <th class="text-center">Category Detail</th>
+                            <th class="text-center" style="width: 15%;">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -56,18 +56,23 @@ include('header.php');
 
                                 echo '<tr>
                                         <td class="text-center"><b>' .$catId. '</b></td>';?>
-                                        <td><img src="../../images/<?php echo $row['image'];?>"></td>
+                                        <td><img src="../../images/<?php echo $row['image'];?>" width="150px" height="150px"></td>
                             <?php echo '     <td>
                                             <p>Name : <b>' .$catName. '</b></p>
                                             <p>Description : <b class="truncate">' .$catDesc. '</b></p>
                                         </td>
                                         <td class="text-center">
-                                            <div class="row mx-auto" style="width:112px">
+                                        <form action="#" method="POST">
+                                            <div class="row mx-auto" style="display:flex; margin-left:8%;">
+                                            <div class="col">
                                             <button class="btn btn-sm btn-primary edit_cat" type="button" data-toggle="modal" data-target="#updateCat' .$catId. '">Edit</button>
-                                            <form action="partials/_categoryManage.php" method="POST">
-                                                <button name="removeCategory" class="btn btn-sm btn-danger" style="margin-left:9px;">Delete</button>
+                                            </div>
+                                            <div class="col">
+                                                <button name="removeCategory" type="button" class="btn btn-sm btn-danger" style="margin-left:9px;">Delete</button>
+                                                </div>
+                                                </div>
                                                 <input type="hidden" name="catId" value="'.$catId. '">
-                                            </form></div>
+                                            </form>
                                         </td>
                                     </tr>';
                             }
@@ -88,61 +93,7 @@ include('header.php');
     
     <!-- /.content -->
   </div>
-  
-<?php 
-    $catsql = "SELECT * FROM `tbl_categories`";
-    $catResult = mysqli_query($con, $catsql);
-    while($catRow = mysqli_fetch_assoc($catResult)){
-        $catId = $catRow['category_id'];
-        $catName = $catRow['category_name'];
-        $catDesc = $catRow['category_desc'];
-?>
 
-<!-- Modal -->
-<div class="modal fade" id="updateCat<?php echo $catId; ?>" tabindex="-1" role="dialog" aria-labelledby="updateCat<?php echo $catId; ?>" aria-hidden="true" style="width: -webkit-fill-available;">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: rgb(111 202 203);">
-        <h5 class="modal-title" id="updateCat<?php echo $catId; ?>">Category Id: <b><?php echo $catId; ?></b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="update_category.php" method="post" enctype="multipart/form-data">
-		    <div class="text-left my-2 row" style="border-bottom: 2px solid #dee2e6;">
-		   		<div class="form-group col-md-8">
-					<b><label for="image">Image</label></b>
-					<input type="file" name="catimage" id="catimage" accept=".jpg" class="form-control" required style="border:none;" onchange="document.getElementById('itemPhoto').src = window.URL.createObjectURL(this.files[0])">
-					<small id="Info" class="form-text text-muted mx-3">Please .jpg file upload.</small>
-					<input type="hidden" id="catId" name="catId" value="<?php echo $catId; ?>">
-					<button type="submit" class="btn btn-success my-1" name="updateCatPhoto">Update Img</button>
-				</div>
-				<div class="form-group col-md-4">
-					<img src="/GalaxyCinemas\images-<?php echo $catId; ?>.jpg" id="itemPhoto" name="itemPhoto" alt="Category image" width="100" height="100">
-				</div>
-			</div>
-		</form>
-        <form action="partials/_categoryManage.php" method="post">
-            <div class="text-left my-2">
-                <b><label for="name">Name</label></b>
-                <input class="form-control" id="name" name="name" value="<?php echo $catName; ?>" type="text" required>
-            </div>
-            <div class="text-left my-2">
-                <b><label for="desc">Description</label></b>
-                <textarea class="form-control" id="desc" name="desc" rows="2" required minlength="6"><?php echo $catDesc; ?></textarea>
-            </div>
-            <input type="hidden" id="catId" name="catId" value="<?php echo $catId; ?>">
-            <button type="submit" class="btn btn-success" name="updateCategory">Update</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php
-    }
-?>
   <?php
 include('footer.php');
 ?>

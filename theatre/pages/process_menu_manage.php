@@ -10,7 +10,7 @@
     $target_dir = "../../images/";
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
     
-    $flname="images/".basename($_FILES["image"]["name"]);
+    $flname=basename($_FILES["image"]["name"]);
     
     mysqli_query($con,"INSERT INTO `tbl_snacks` (`snackName`, `snackPrice`, `snackDesc`, `image`, `snackCategoryId`, `snackPubDate`) VALUES ('$name', '$price', '$description','$flname', '$categoryId', current_timestamp())");   
     
