@@ -22,34 +22,11 @@ $movie = mysqli_fetch_array($qry2);
         <div class="section group">
           <div class="container">
             <div class="container my-3 mb-5">
-              <div class="text-center bg-light my-3" style="border-top: 2px groove black;border-bottom: 2px groove black;">
-                <h2 class="text-center">Menu </h2>
-              </div>
-              <div class="container my-5">
-                <div class="row">
-                  <!-- Fetch all the categories and use a loop to iterate through categories -->
-                  <?php
-                  $sql = "SELECT * FROM `tbl_categories`";
-                  $result = mysqli_query($con, $sql);
-                  while ($row = mysqli_fetch_assoc($result)) {
-                    $id = $row['category_id'];
-                    $cat = $row['category_name'];
-                    $desc = $row['category_desc'];
-                    $img = $row['image']; ?>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
-                      <div class="card">
-                        <img src="images/<?php echo $row['image']; ?>" height="200px" width="300px">
-                        <?php echo '<div class="card-body">
-                      <h5 class="card-title"><a href="#?catid=' . $id . '" style="font-size:20px;">' . substr($cat, 0, 29) . '</a></h5>
-                      <p class="card-text" style="font-size:14px;">' . substr($desc, 0, 30) . '... </p>
-                      <a href="view_snack_list.php?catid=' . $id . '" class="btn btn-primary">View All</a>
-                    </div>'; ?>
-                      </div>
-                    </div> <?php
-                          }
-                            ?>
+            <div class="container my-5">
+               
+            <h1 style="text-align: center;">Under Maintenance</h1>
                 </div>
-              </div>
+            </div>
             </div>
           </div>
 
