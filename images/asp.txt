@@ -1,0 +1,31 @@
+ASP.NET
+=======
+
+ASP - Active server pages
+clr - common language runtime
+webserver - IIS (internet information service)
+languages .net support - C#, vb.net, F#
+MSIL - microsoft intermediate language
+JIT- Just in Time 
+CTS - Common type system
+CLS - Common Language specification
+ASP.net web home
+ASP.net mvc
+
+
+
+
+
+
+fname
+lname
+email
+address 
+gender
+course
+known languages
+username
+pass
+conf pass
+checkbox(accept terms)
+submit btn        

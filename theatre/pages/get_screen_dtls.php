@@ -6,8 +6,6 @@
    <table class="table table-bordered table-hover">
      <th class="col-md-1">Slno</th>
      <th class="col-md-3">Screen Name</th>
-     <th class="col-md-1">Seats</th>
-     <th class="col-md-1">Charge</th>
      <th class="col-md-3">Show Time</th>
      <th class="text-right col-md-3"><button data-toggle="modal" data-target="#view-modal" id="getUser" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen</button></th>
      <?php
@@ -17,8 +15,6 @@
        <tr>
          <td><?php echo $sl; ?></td>
          <td><?php echo $screen['screen_name']; ?></td>
-         <td><?php echo $screen['seats']; ?></td>
-         <td><?php echo $screen['charge']; ?></td>
          <?php
           $st = mysqli_query($con, "select * from tbl_show_time where screen_id='" . $screen['screen_id'] . "'");
           ?>

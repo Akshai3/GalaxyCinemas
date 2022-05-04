@@ -67,8 +67,6 @@ include('header.php');
             <table class="table table-bordered table-hover">
               <th class="col-md-1">Slno</th>
               <th class="col-md-3">Screen Name</th>
-              <th class="col-md-1">Seats</th>
-              <th class="col-md-1">Charge</th>
               <th class="col-md-3">Show Time</th>
               <th class="text-right col-md-3"><button data-toggle="modal" data-target="#view-modal" id="getUser" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen</button></th>
                 <?php 
@@ -79,8 +77,7 @@ include('header.php');
                   <tr>
                     <td><?php echo $sl;?></td>
                     <td><?php echo $screen['screen_name'];?></td>
-                    <td><?php echo $screen['seats'];?></td>
-                    <td><?php echo $screen['charge'];?></td>
+                    
                     <?php 
                       $st=mysqli_query($con,"select * from tbl_show_time where screen_id='".$screen['screen_id']."'");
                     ?>
@@ -109,6 +106,63 @@ include('header.php');
         </div> 
         <!-- /.box-footer-->
       </div>
+
+      <div class="box">
+         <div class="box-header with-border">
+              <h3 class="box-title">Screen Type Details</h3>
+            </div>
+        <div class="box-body" id="screentydtls">
+          <?php
+            $sr=mysqli_query($con,"select * from tbl_screentype where screen_id in(select screen_id from  tbl_screens where t_id='".$_SESSION['theatre']."')") ;
+            if(mysqli_num_rows($sr))
+            {
+          ?>
+            <table class="table table-bordered table-hover">
+              <th class="col-md-1">Slno</th>
+              <th class="col-md-3">Screen Name</th>
+              <th class="col-md-3">Type Name</th>
+              <th class="col-md-3">Seats</th>
+              <th class="col-md-3">Charge</th>
+              <th class="text-right col-md-3"><button data-toggle="modal" data-target="#view-modal3" id="getUser3" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen Type</button></th>
+                <?php 
+                $sl=1;
+                while($screen=mysqli_fetch_array($sr))
+                {
+                  ?>
+                  <tr>
+                    <td><?php echo $sl;?></td>
+                    <?php
+                  $snm=mysqli_query($con,"select * from tbl_screens where screen_id='".$screen['screen_id']."'");
+                  $scnm=mysqli_fetch_array($snm);
+                 
+                  ?>
+                    <td><?php echo $scnm['screen_name'];?></td>
+                    <td><?php echo $screen['type_name'];?></td>
+                    <td><?php echo $screen['seats'];?></td>
+                    <td><?php echo $screen['charge'];?></td>
+                  </tr>
+                  <?php
+                  $sl++;
+                }
+                ?>
+            </table>
+            <?php
+            }
+            else
+            {
+              ?>
+              <button data-toggle="modal" data-target="#view-modal" id="getUser" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen</button>
+                    
+              <?php
+            }
+            ?>
+        </div> 
+        <!-- /.box-footer-->
+      </div>
+
+
+
+
        <div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
              <div class="modal-dialog"> 
                   <div class="modal-content"> 
@@ -170,6 +224,65 @@ include('header.php');
                              
                         </div> 
                         
+                 </div> 
+              </div>
+       </div>
+       <div id="view-modal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+             <div class="modal-dialog"> 
+                  <div class="modal-content"> 
+                  <form action="save_screen_type.php" method="POST">
+                       <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">
+                            	<i class="fa fa-plus"></i> Add Screen Type
+                            </h4> 
+                       </div> 
+                       <div class="modal-body"> 
+                           <div class="form-group">
+                       	     <label class="control-label">Select Screen</label>
+                       	     <select name="box_id" class="form-control" id="screen">
+                              <option value="0">Select Screen</option>
+                              <?php
+                              $q=mysqli_query($con,"select  * from tbl_screens where t_id='".$_SESSION['theatre']."'");
+                              while($th=mysqli_fetch_array($q))
+                              {
+                             ?>
+                            <option value="<?php echo $th['screen_id'];?>"><?php echo $th['screen_name'];?></option>
+                            <?php
+                              }
+                              ?>
+                          </select>
+                       	   </div>
+                       	   <div class="form-group">
+                            <label class="control-label">Select Screen Type</label>
+                       	     <select name="box_name" id="st_name" class="form-control">
+                       	       <option value="0">Select Type</option>
+                       	       <option>Gold</option>
+                       	       <option>Platinum</option>
+                       	       <option>Diamond</option>
+                       	     </select>
+                       	   </div>
+
+                            <div class="form-group">
+                            <input type="number" name="rname" id="rowname" placeholder="Screen Row" class="form-control"/>
+                          </div>
+                          <div class="form-group">
+                          <input type="number" name="cname" id="colname" placeholder="Screen Column" class="form-control"/>
+                          </div>
+                          <div class="form-group">
+                          <input type="number" name="cseat" id="sename" placeholder="Seats" class="form-control"/>
+                          </div>
+                          <div class="form-group">
+                          <input type="number" name="price" id="chname" placeholder="Charge" class="form-control"/>
+                          </div>
+                       	   <div class="form-group">
+                            <button class="btn btn-success" id="savetype">Save</button>
+                          </div>
+                        </div> 
+                        <div class="modal-footer"> 
+                             
+                        </div> 
+                        </form>
                  </div> 
               </div>
        </div>
@@ -263,7 +376,7 @@ $(document).on('click', '#savescreen', function(){
     $.ajax({
   			url: 'save_screen.php',
   			type: 'POST',
-  			data: 'theatre='+<?php echo $_SESSION['theatre'];?>+'&name='+name+'&charge='+charge+'&seats='+seats,
+  			data: 'theatre='+<?php echo $_SESSION['theatre'];?>+'&name='+name,
   			dataType: 'html'
   		})
   		.done(function(data){
@@ -318,4 +431,5 @@ $('#savetime').click(function(){
   }
   
 });
+
 </script>
