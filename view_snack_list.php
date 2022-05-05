@@ -55,12 +55,29 @@ $movie = mysqli_fetch_array($qry2);
                     <img src="images/<?php echo $row['image']; ?>" height="200px" width="300px">
 
                   <?php echo '<div class="card-body">
+                  <form action="order_snacks.php" method="POST">
                                 <h5 class="card-title" style="font-size:18px; color:darkblue;">' . substr($pizzaName, 0, 20) . '...</h5>
                                 <h6 style="color: #ff0000; font-size:14px;">Rs. ' . $pizzaPrice . '/-</h6>
                                 <p class="card-text" style="font-size:14px;">' . substr($pizzaDesc, 0, 29) . '...</p>   
+                                <div class="form-group">
+                                <label class="control-label">Select Quantity</label>
+                                  <select name="qnty_name" id="q_name" class="form-control">
+                                    
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                  </select>
+                                </div>
                                 <div class="row justify-content-center">';
 
-                    echo '<form action="order_snacks.php" method="POST">
+                    echo '
                                               <input type="hidden" name="itemId" value="' . $pizzaId . '">
                                               <button type="submit" name="addToCart" class="btn btn-primary mx-2">Order Now</button>
                             </form>                            

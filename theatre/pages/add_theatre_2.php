@@ -262,7 +262,6 @@ include('header.php');
                        	       <option>Diamond</option>
                        	     </select>
                        	   </div>
-
                             <div class="form-group">
                             <input type="number" name="rname" id="rowname" placeholder="Screen Row" class="form-control"/>
                           </div>

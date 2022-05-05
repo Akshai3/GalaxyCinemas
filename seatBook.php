@@ -113,132 +113,218 @@
     <form method="post" action="buyticket.php" onsubmit="return check();">
       <?php
 
-      $query = "SELECT sty_id,type_name FROM `tbl_screentype` WHERE screen_id = '" . $_SESSION['screen_id'] . "' ";
-      $record = mysqli_query($con, $query);
+      // $query = "SELECT sty_id,type_name FROM `tbl_screentype` WHERE screen_id = '" . $_SESSION['screen_id'] . "' ";
+      // $record = mysqli_query($con, $query);
+      // while ($houseInfo = mysqli_fetch_assoc($record)) {
+      //   $seatType =  $houseInfo["type_name"];
+      //   $sId = $houseInfo['sty_id'];
+      $sql = "SELECT `type_name`,`position` FROM `tbl_screentype` WHERE screen_Id ='" . $_SESSION['screen_id'] . "' ORDER BY `position`";
+      $record = mysqli_query($con, $sql);
       while ($houseInfo = mysqli_fetch_assoc($record)) {
         $seatType =  $houseInfo["type_name"];
-        $sId = $houseInfo['sty_id'];
-        if ($seatType == "Gold") {
-          $query2 = "SELECT sty_id,scRow,scCol FROM `tbl_screentype` WHERE type_name = 'Gold' and sty_id=$sId";
-          $record2 = mysqli_query($con, $query2);
-          if (mysqli_num_rows($record2) > 0) {
-            while ($row = mysqli_fetch_array($record2)) {
-              $row['scRow'] . ', ' . $row['scCol'];
-          $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
-         $record4 = mysqli_query($con, $query4) or die("Query Error!".mysqli_error($con));
-         $seatsOccupied;
-         $numberOfSeatsOccupied = 0;
-         while ($row1 = mysqli_fetch_array($record4)) {
-           $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
-           $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
-           $numberOfSeatsOccupied++;
-         }?>
-         <div class="head1">
-           <h4>GOLD</h4>
-         </div>
-        <div class="gold">
-        <?php
-
-        while ($row['scRow']) {
-          $rowName = chr(65 + $row['scRow'] - 1);
-        ?>
-          <div class="ticketing-row">
-
-          <?php
-          for ($i = 1; $i <= $row['scCol']; $i++) {
-            $isReserved = 0;
-
-            for ($it = 0; $it < $numberOfSeatsOccupied; $it++) {
-              if ($seatsOccupied[$it][0] == $row['scRow'] && $seatsOccupied[$it][1] == $i)
-                $isReserved = 1;
-            }
-
-
-            if ($isReserved) {
-              echo "<div class='ticketing-col reserved'>";
-              print "Sold " . $rowName . $i;
-            } else {
-              echo "<div class='ticketing-col'>";
-              print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
-              print $rowName . $i;
-            }
-            echo "</div>";
-          }
-          $row['scRow']--;
-          echo "</div>"; // Ticketing-row end
-        }
-          ?>
-          </div>
-      </div>
-
-<?php
-            }
-          }
-        } else if ($seatType == "Platinum") {
-          $query3 = "SELECT sty_id,scRow,scCol FROM `tbl_screentype` WHERE type_name = 'Platinum' and sty_id=$sId";
+        $postition = $houseInfo["position"];
+        if ($postition == '1') {
+          $query3 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = '1' AND screen_id='" . $_SESSION['screen_id'] . "' ";
           $record3 = mysqli_query($con, $query3);
           if (mysqli_num_rows($record3) > 0) {
             while ($row = mysqli_fetch_array($record3)) {
-            $row['scRow'] . ', ' . $row['scCol'];?>
-    
-    <div class="head2">
-           <h4>Platinum</h4>
-         </div>
-    <div class="Platinum">
-        <?php
+              $row['scRow'] . ', ' . $row['scCol'];
+              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
+              $seatsOccupied;
+              $numberOfSeatsOccupied = 0;
+              while ($row1 = mysqli_fetch_array($record4)) {
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+                $numberOfSeatsOccupied++;
+              } ?>
+              <div class="head2">
+                <h4><?php echo $row['type_name']; ?></h4>
+              </div>
+              <div class="Platinum">
+                <?php
 
-        while ($row['scRow']) {
-          $rowName = chr(65 + $row['scRow'] - 1);
-        ?>
-          <div class="ticketing-row">
+                while ($row['scRow']) {
+                  $rowName = chr(65 + $row['scRow'] - 1);
+                ?>
+                  <div class="ticketing-row">
 
-          <?php
-          for ($i = 1; $i <= $row['scCol']; $i++) {
-            $isReserved = 0;
+                  <?php
+                  for ($i = 1; $i <= $row['scCol']; $i++) {
+                    $isReserved = 0;
 
-            for ($it = 0; $it < $numberOfSeatsOccupied; $it++) {
-              if ($seatsOccupied[$it][0] == $row['scRow'] && $seatsOccupied[$it][1] == $i)
-                $isReserved = 1;
+                    for ($it = 0; $it < $numberOfSeatsOccupied; $it++) {
+                      if ($seatsOccupied[$it][0] == $row['scRow'] && $seatsOccupied[$it][1] == $i)
+                        $isReserved = 1;
+                    }
+
+
+                    if ($isReserved) {
+                      echo "<div class='ticketing-col reserved'>";
+                      print "Sold " . $rowName . $i;
+                    } else {
+                      echo "<div class='ticketing-col'>";
+                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
+                      print $rowName . $i;
+                    }
+                    echo "</div>";
+                  }
+                  $row['scRow']--;
+                  echo "</div>"; // Ticketing-row end
+                }
+                  ?>
+                  </div>
+              </div>
+            <?php
             }
-
-
-            if ($isReserved) {
-              echo "<div class='ticketing-col reserved'>";
-              print "Sold " . $rowName . $i;
-            } else {
-              echo "<div class='ticketing-col'>";
-              print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
-              print $rowName . $i;
-            }
-            echo "</div>";
           }
-          $row['scRow']--;
-          echo "</div>"; // Ticketing-row end
         }
-          ?>
-          </div>
-      </div>
-              <?php
+        if ($postition == 2) {
+          $query2 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = 2 AND screen_id='" . $_SESSION['screen_id'] . "' ";
+          $record2 = mysqli_query($con, $query2);
+          if (mysqli_num_rows($record2) > 0) {
+            while ($rowN = mysqli_fetch_array($record2)) {
+              $rowN['scRow'] . ', ' . $rowN['scCol'];
+              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
+              $seatsOccupied;
+              $numberOfSeatsOccupied = 0;
+              while ($row1 = mysqli_fetch_array($record4)) {
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+                $numberOfSeatsOccupied++;
+              } ?>
+              <div class="head1">
+                <h4><?php echo $rowN['type_name']; ?></h4>
+              </div>
+              <div class="gold">
+                <?php
+
+                while ($rowN['scRow']) {
+                  $rowName = chr(65 + $rowN['scRow'] - 1);
+                ?>
+                  <div class="ticketing-row">
+
+                  <?php
+                  for ($i = 1; $i <= $rowN['scCol']; $i++) {
+                    $isReserved = 0;
+
+                    for ($it = 0; $it < $numberOfSeatsOccupied; $it++) {
+                      if ($seatsOccupied[$it][0] == $rowN['scRow'] && $seatsOccupied[$it][1] == $i)
+                        $isReserved = 1;
+                    }
+
+
+                    if ($isReserved) {
+                      echo "<div class='ticketing-col reserved'>";
+                      print "Sold " . $rowName . $i;
+                    } else {
+                      echo "<div class='ticketing-col'>";
+                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowN['scRow'] . "|" . $i . "'>";
+                      print $rowName . $i;
+                    }
+                    echo "</div>";
+                  }
+                  $rowN['scRow']--;
+                  echo "</div>"; // Ticketing-row end
+                }
+                  ?>
+                  </div>
+              </div>
+
+      <?php
             }
           }
         }
+        if ($postition == 3) {
+          $query2 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = 3 AND screen_id='" . $_SESSION['screen_id'] . "' ";
+          $record2 = mysqli_query($con, $query2);
+          if (mysqli_num_rows($record2) > 0) {
+            while ($rowG = mysqli_fetch_array($record2)) {
+              $rowG['scRow'] . ', ' . $rowG['scCol'];
+              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
+              $seatsOccupied;
+              $numberOfSeatsOccupied = 0;
+              while ($row1 = mysqli_fetch_array($record4)) {
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+                $numberOfSeatsOccupied++;
+              } ?>
+              <div class="head1">
+                <h4><?php echo $rowG['type_name']; ?></h4>
+              </div>
+              <div class="gold">
+                <?php
+
+                while ($rowG['scRow']) {
+                  $rowName = chr(65 + $rowG['scRow'] - 1);
+                ?>
+                  <div class="ticketing-row">
+
+                  <?php
+                  for ($i = 1; $i <= $rowG['scCol']; $i++) {
+                    $isReserved = 0;
+
+                    for ($it = 0; $it < $numberOfSeatsOccupied; $it++) {
+                      if ($seatsOccupied[$it][0] == $rowG['scRow'] && $seatsOccupied[$it][1] == $i)
+                        $isReserved = 1;
+                    }
 
 
+                    if ($isReserved) {
+                      echo "<div class='ticketing-col reserved'>";
+                      print "Sold " . $rowName . $i;
+                    } else {
+                      echo "<div class='ticketing-col'>";
+                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowG['scRow'] . "|" . $i . "'>";
+                      print $rowName . $i;
+                    }
+                    echo "</div>";
+                  }
+                  $rowG['scRow']--;
+                  echo "</div>"; // Ticketing-row end
+                }
+                  ?>
+                  </div>
+              </div>
 
-        //  $query = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
-        //  $record = mysqli_query($con, $query) or die("Query Error!".mysqli_error($con));
-        //  $seatsOccupied;
-        //  $numberOfSeatsOccupied = 0;
-        //  while ($row = mysqli_fetch_array($record)) {
-        //    $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
-        //    $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
-        //    $numberOfSeatsOccupied++;
-        //  }
-
+      <?php
+            }
+          }
+        }
       }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //  $query = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+      //  $record = mysqli_query($con, $query) or die("Query Error!".mysqli_error($con));
+      //  $seatsOccupied;
+      //  $numberOfSeatsOccupied = 0;
+      //  while ($row = mysqli_fetch_array($record)) {
+      //    $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
+      //    $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+      //    $numberOfSeatsOccupied++;
+      //  }
+
+
+
       ?>
-      
+
 
 
 
@@ -246,13 +332,13 @@
       <div class="ticketing-row">
 
       </div>
-  <div class="bottomDock">
-      <button type="submit" name="submit" id="submit" class="book">Select Seats</button>
-  </div>
+      <div class="bottomDock">
+        <button type="submit" name="submit" id="submit" class="book">Select Seats</button>
+      </div>
     </form>
   </section>
 
-  
+
 
 
 
@@ -276,7 +362,7 @@
   </div>
 
   <br><br><br>
- 
+
   <script type="text/javascript">
     function check() {
       var flag = -1;

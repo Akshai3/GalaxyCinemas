@@ -279,3 +279,28 @@ body {
      font-size: large;
  
  }
+
+ main {
+    margin: 100px auto;
+    max-width: 900px;
+    padding: 1.875rem 3.125rem 3.125rem;
+    background: #282828;
+  }
+  
+  main .bar {
+    text-align: center;
+    font-family: 'Yantramanav', sans-serif;
+    text-transform: uppercase;
+    margin: 0 -4.375rem;
+    padding: 0.4rem 4rem;
+    background: rgb(254, 229, 14);
+  }
+  
+  .bar h2, span {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .bar .aside {
+    text-align: right;
+  }

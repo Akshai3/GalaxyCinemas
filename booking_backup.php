@@ -1,102 +1,129 @@
-<!DOCTYPE HTML>
-<html>
+<?php include('header.php');
+error_reporting(0);
+if (!isset($_SESSION['loginstat'])) {
+	header('location:Login.php');
+}
+$qry2 = mysqli_query($con, "select * from tbl_movie where movie_id='" . $_SESSION['movie'] . "'");
+$movie = mysqli_fetch_array($qry2);
+?>
 
-<head>
-	<title>GCTB</title>
-	<link rel="stylesheet" type="text/css" href="trailer.css">
-
-	<?php include('header.php');
-	error_reporting(0);
-	if (!isset($_SESSION['loginstat'])) {
-		header('location:Login.php');
-	}
-	$qry2 = mysqli_query($con, "select * from tbl_movie where movie_id='" . $_SESSION['movie'] . "'");
-	$movie = mysqli_fetch_array($qry2);
-	?>
-</head>
-
-<body>
-
-	<div class="content">
-		<div class="wrap">
-			<div class="content-top">
-				<div class="section group">
-					<div class="about span_1_of_2">
-						<div class="logo">
-							Movie Details
+<div class="content">
+	<div class="wrap">
+		<div class="content-top">
+			<div class="section group">
+				<div class="about span_1_of_2">
+					<h3><?php echo $movie['movie_name']; ?></h3>
+					<div class="about-top">
+						<div class="grid images_3_of_2">
+							<img src="<?php echo $movie['image']; ?>" alt="" />
 						</div>
-
-						<p id="move"> movie name</p>
-						<br />
-						<div class="det">Genre:</div>
-
-						<div class="row">
-							<p class="column" id="genre1"></p>
-							<p class="column" id="genre2"></p>
+						<div class="desc span_3_of_2">
+							<p class="p-link" style="font-size:15px"><b>Cast : </b><?php echo $movie['cast']; ?></p>
+							<p class="p-link" style="font-size:15px"><b>Release Date : </b><?php echo date('d-M-Y', strtotime($movie['release_date'])); ?></p>
+							<p style="font-size:15px"><?php echo $movie['desc']; ?></p>
+							<a href="<?php echo $movie['video_url']; ?>" target="_blank" class="watch_but">Watch Trailer</a>
 						</div>
-
-
-						<hr>
-						<div class="det2"> Ratings:</div>
-						<div class="row">
-							<p class="column" id="rat1"></p>
-							<p class="column" id="rat2"></p>
-						</div>
-						<br />
-						<div id="trailer_dock">
-							<p>
-							<h2 style="text-align:center;color: white;">Watch Trailer</h2>
-							</p>
-
-							<p style="text-align:center">
-								<iframe id="vid" width="900" height="450" src="">
-
-								</iframe>
-								<br />
-								<br />
-								<br />
-								<br />
-								<br />
-							</p>
-						</div>
-						<div id="bottom_dock">
-							<a class="button" href="theatre.html">
-								Book Tickets
-							</a>
-						</div>
-
+						<div class="clear"></div>
 					</div>
+					<table class="table table-hover table-bordered text-center">
+						<!-- <form method="POST" action="#"> -->
+						<?php
+						$s = mysqli_query($con, "select * from tbl_shows where s_id='" . $_SESSION['show'] . "'");
+						$shw = mysqli_fetch_array($s);
 
+						$t = mysqli_query($con, "select * from tbl_theatre where id='" . $shw['theatre_id'] . "'");
+						$theatre = mysqli_fetch_array($t);
+						?>
+						<tr>
+							<td class="col-md-6">
+								Theatre
+							</td>
+							<td>
+								<?php echo $theatre['name'] . ", " . $theatre['place']; ?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Screen
+							</td>
+							<td>
+								<?php
+								$ttm = mysqli_query($con, "select  * from tbl_show_time where st_id='" . $shw['st_id'] . "'");
+
+								$ttme = mysqli_fetch_array($ttm);
+
+								$bkse = mysqli_query($con, "select  * from tbl_screentype where screen_id='" . $ttme['screen_id'] . "'");
+								$seat = mysqli_fetch_array($bkse);
+
+								$sn = mysqli_query($con, "select  * from tbl_screens where screen_id='" . $ttme['screen_id'] . "'");
+
+								$screen = mysqli_fetch_array($sn);
+								echo $screen['screen_name'];
+
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Date
+							</td>
+							<td>
+								<?php
+								$_SESSION['sid'] = $shw['s_id'];
+								$_SESSION['tid'] = $theatre['id'];
+								$_SESSION['stid'] = $ttme['st_id'];
+								$_SESSION['screen_id'] = $screen['screen_id'];
+
+								if (isset($_GET['date'])) {
+									$date = $_GET['date'];
+								} else {
+									if ($shw['start_date'] > date('Y-m-d')) {
+										$date = date('Y-m-d', strtotime($shw['start_date'] . "-1 days"));
+									} else {
+										$date = date('Y-m-d');
+									}
+									$_SESSION['dd'] = $date;
+								}
+								?>
+								<div class="col-md-12 text-center" style="padding-bottom:20px">
+									<?php if ($date > $_SESSION['dd']) { ?><a href="booking.php?date=<?php echo date('Y-m-d', strtotime($date . "-1 days")); ?>"><button class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></button></a> <?php } ?><span style="cursor:default" class="btn btn-default"><?php echo date('d-M-Y', strtotime($date)); ?></span>
+									<?php if ($date != date('Y-m-d', strtotime($_SESSION['dd'] . "+4 days"))) { ?>
+										<a href="booking.php?date=<?php echo date('Y-m-d', strtotime($date . "+1 days")); ?>"><button class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></button></a>
+									<?php }
+									$av = mysqli_query($con, "select sum(no_seats) from tbl_bookings where show_id='" . $_SESSION['show'] . "' and ticket_date='$date'");
+									$avl = mysqli_fetch_array($av);
+									?>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								Show Time
+							</td>
+							<td>
+								<?php echo date('h:i A', strtotime($ttme['start_time'])) . " " . $ttme['name']; ?> Show
+							</td>
+						</tr>
+
+
+						<tr>
+							<td colspan="2"><?php if ($avl[0] == $seat['seats']) { ?><button type="button" class="btn btn-danger" style="width:100%">House Full</button><?php } else { ?>
+									<a href="seatBook.php" class="btn btn-info" style="width:100%">Select Seats</a>
+								<?php } ?>
+								</form>
+							</td>
+						</tr>
+
+						<tr>
+							<td></td>
+						</tr>
+					</table>
 				</div>
-				<div class="clear"></div>
+				<?php include('movie_sidebar.php'); ?>
 			</div>
-
+			<div class="clear"></div>
 		</div>
 	</div>
-
-
-	<script type="text/javascript">
-		$('#seats').change(function() {
-			var charge = <?php echo $screen['charge']; ?>;
-			amount = charge * $(this).val();
-			$('#amount').html("Rs " + amount);
-			$('#hm').val(amount);
-		});
-	</script>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
+<?php include('footer.php'); ?>
