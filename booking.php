@@ -52,6 +52,9 @@ $movie = mysqli_fetch_array($qry2);
 
 								$ttme = mysqli_fetch_array($ttm);
 
+								$bkse = mysqli_query($con, "select  * from tbl_screentype where screen_id='" . $ttme['screen_id'] . "'");
+								$seat = mysqli_fetch_array($bkse);
+
 								$sn = mysqli_query($con, "select  * from tbl_screens where screen_id='" . $ttme['screen_id'] . "'");
 
 								$screen = mysqli_fetch_array($sn);
@@ -105,7 +108,7 @@ $movie = mysqli_fetch_array($qry2);
 
 
 						<tr>
-							<td colspan="2"><?php if ($avl[0] == $screen['seats']) { ?><button type="button" class="btn btn-danger" style="width:100%">House Full</button><?php } else { ?>
+							<td colspan="2"><?php if ($avl[0] == $seat['seats']) { ?><button type="button" class="btn btn-danger" style="width:100%">House Full</button><?php } else { ?>
 									<a href="seatBook.php" class="btn btn-info" style="width:100%">Select Seats</a>
 								<?php } ?>
 								</form>

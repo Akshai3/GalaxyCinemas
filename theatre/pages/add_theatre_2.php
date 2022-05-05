@@ -151,7 +151,7 @@ include('header.php');
             else
             {
               ?>
-              <button data-toggle="modal" data-target="#view-modal" id="getUser" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen</button>
+              <button data-toggle="modal" data-target="#view-modal3" id="getUser" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add Screen Type</button>
                     
               <?php
             }
@@ -269,11 +269,13 @@ include('header.php');
                           <div class="form-group">
                           <input type="number" name="cname" id="colname" placeholder="Screen Column" class="form-control"/>
                           </div>
+                          <div class="form-group" style="display: flex;">
+                          <input style="width:80%;" type="number" name="cseat" id="sename" placeholder="Seats" class="form-control" readonly />
+                          <input style="margin-left:5%; background-color:blue;" class="btn btn-success" type="button" value="Calc Seats"  name="calc" onclick="totseat()">
+                        </div>
                           <div class="form-group">
-                          <input type="number" name="cseat" id="sename" placeholder="Seats" class="form-control"/>
-                          </div>
-                          <div class="form-group">
-                          <input type="number" name="price" id="chname" placeholder="Charge" class="form-control"/>
+                          <input type="number" name="price" id="chname" placeholder="Charge" class="form-control"/> 
+                          
                           </div>
                        	   <div class="form-group">
                             <button class="btn btn-success" id="savetype">Save</button>
@@ -293,6 +295,14 @@ include('header.php');
 include('footer.php');
 ?>
 <script type="text/javascript">
+
+function totseat(){
+  var row = Number(document.getElementById("rowname").value);
+  var col = Number(document.getElementById("colname").value);
+  var total = (row * col);
+  document.getElementById("sename").value=total;
+}
+
   var screenid;
   function loadScreendtls()
   {
