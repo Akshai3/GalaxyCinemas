@@ -86,6 +86,9 @@ if (isset($_SESSION['loginstat'])) {
                             </li>
                         </ul>
                         <br>
+                        <input type="hidden" name="snackID" value="<?php echo $snackId ;?>">
+                        <input type="hidden" name="quantity" value="<?php echo $Quantity ;?>">
+                        <input type="hidden" name="amount" value="<?php echo $total ;?>">
                         <button type="submit" class="btn btn-primary btn-block" name="checkout">Order</button>
                     </form>
                       </div>

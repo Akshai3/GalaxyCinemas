@@ -10,6 +10,7 @@ $movie = mysqli_fetch_array($qry2);
 	<div class="wrap">
 		<div class="content-top">
 			<div class="section group">
+				
 				<div class="about span_1_of_2">
 					<h3 style="color:black;" class="text-center">BOOKING HISTORY</h3>
 					<?php include('msgbox.php'); ?>
@@ -93,6 +94,86 @@ $movie = mysqli_fetch_array($qry2);
 					?>
 						<h3 style="color:red;" class="text-center">No Previous Bookings Found!</h3>
 						<p>Once you start booking movie tickets with this account, you'll be able to see all the booking history.</p>
+					<?php
+					}
+					?>
+				</div>
+				<div class="about span_1_of_2">
+					<h3 style="color:black;" class="text-center">ORDER HISTORY</h3>
+					<?php include('msgbox.php'); ?>
+					<?php
+					$od = mysqli_query($con, "select * from tbl_snackbook where user_id='" . $_SESSION['uid'] . "'");
+					$od1 = mysqli_query($con, "select * from tbl_categories");
+					$snod1 = mysqli_fetch_array($od1);
+					$od2 = mysqli_query($con, "select * from tbl_theatre");
+					$snod2 = mysqli_fetch_array($od2);
+					if (mysqli_num_rows($od)) {
+					?>
+						<table class="table table-bordered">
+							<thead>
+								<th>Order Id</th>
+								<th>Theatre</th>
+								<th>Snack</th>
+								<th>Quantity</th>
+								<th>Price</th>
+								<th>Order date</th>
+								<th></th>
+							</thead>
+							<tbody>
+								<?php
+								while ($snod = mysqli_fetch_array($od)) {
+									$s = mysqli_query($con, "select * from tbl_snacks where snackId='" . $snod['snackId'] . "'");
+									$sn = mysqli_fetch_array($s);
+									$c = mysqli_query($con, "select * from tbl_categories where category_id='" . $snod1['category_id'] . "'");
+									$ct = mysqli_fetch_array($c);
+									$t = mysqli_query($con, "select * from tbl_categories where t_id=(select id from tbl_theatre where id='" . $snod2['id'] . "')");
+									$the = mysqli_fetch_array($t);
+								?>
+									<tr>
+										<td>
+											<?php echo $snod['order_id']; ?>
+										</td>
+										<td>
+											<?php echo $snod2['name']; ?>
+										</td>
+										<td>
+											<?php echo $sn['snackName']; ?>
+										</td>
+										<td>
+											<?php echo $snod['itemQuantity']; ?>
+										</td>
+										<td>
+											<?php echo $snod['amount']; ?>
+										</td>
+										<td>
+											<?php echo $snod['orderDate']; ?>
+										</td>
+										<td>
+											<?php
+											$abcd = $snod['order_id'];
+											if ($snod['orderDate'] < date('Y-m-d')) {
+												echo $query3 = "UPDATE `tbl_snackbook` SET `status`='0' WHERE order_id=$abcd";
+												$qry3 = mysqli_query($con, $query3);
+											?>
+												<i class="glyphicon glyphicon-ok"></i>
+											<?php
+											} else { ?>
+												<a href="order_cancel.php?id=<?php echo $snod['order_id']; ?>" style="text-decoration:none; color:red;">Cancel</a>
+											<?php
+											}
+											?>
+										</td>
+									</tr>
+								<?php
+								}
+								?>
+							</tbody>
+						</table>
+					<?php
+					} else {
+					?>
+						<h3 style="color:red;" class="text-center">No Orders Found!</h3>
+						<p>Once you start Order Snacks with this account, you'll be able to see all the Order history.</p>
 					<?php
 					}
 					?>

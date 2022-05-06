@@ -164,7 +164,7 @@
                       print "Sold " . $rowName . $i;
                     } else {
                       echo "<div class='ticketing-col'>";
-                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
+                      print "<input type='checkbox'  class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
                       print $rowName . $i;
                     }
                     echo "</div>";

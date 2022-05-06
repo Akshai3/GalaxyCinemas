@@ -47,40 +47,7 @@ if(!isset($_SESSION['loginstat']))
 												?>
 										</td>
 									</tr>
-									<tr>
-										<td>
-											Date
-										</td>
-										<td>
-											<?php 
-											if(isset($_GET['date']))
-							{
-								$date=$_GET['date'];
-							}
-							else
-							{
-								if($shw['start_date']>date('Y-m-d'))
-								{
-									$date=date('Y-m-d',strtotime($shw['start_date'] . "-1 days"));
-								}
-								else
-								{
-									$date=date('Y-m-d');
-								}
-								$_SESSION['dd']=$date;
-							}
-							?>
-							<div class="col-md-12 text-center" style="padding-bottom:20px">
-								<?php if($date>$_SESSION['dd']){?><a href="booking.php?date=<?php echo date('Y-m-d',strtotime($date . "-1 days"));?>"><button class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></button></a> <?php } ?><span style="cursor:default" class="btn btn-default"><?php echo date('d-M-Y',strtotime($date));?></span>
-								<?php if($date!=date('Y-m-d',strtotime($_SESSION['dd'] . "+4 days"))){?>
-								<a href="booking.php?date=<?php echo date('Y-m-d',strtotime($date . "+1 days"));?>"><button class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></button></a>
-								<?php }
-								$av=mysqli_query($con,"select sum(no_seats) from tbl_bookings where show_id='".$_SESSION['show']."' and ticket_date='$date'");
-								$avl=mysqli_fetch_array($av);
-								?>
-							</div>
-										</td>
-									</tr>
+									
 									<tr>
 										<td>
 											Total Seats
@@ -109,7 +76,19 @@ if(!isset($_SESSION['loginstat']))
 											Seat No
 										</td>
 										<td>
-											<?php echo date('h:i A',strtotime($ttme['start_time']))." ".$ttme['name'];?> Show
+										<?php
+            								for ($i = 0; $i < sizeof($_POST['seat']); $i++) {
+              								list($row,$col) = explode('|', $_POST['seat'][$i]);
+              								$rowName = chr(65 + $row - 1);
+              								echo "<p>" . $rowName . $col . " </p>";
+          									?>
+        
+
+            								<input type="hidden" name="seat[]" value="<?php echo $_POST['seat'][$i] ?>">
+            
+          									<?php
+            									}
+          									?>
 										</td>
 									</tr>
 									<tr>
@@ -117,6 +96,7 @@ if(!isset($_SESSION['loginstat']))
 											Amount
 										</td>
 										<td id="amount" style="font-weight:bold;font-size:18px">
+										
 											Rs <?php echo $screen['charge'];?>
 										</td>
 									</tr>
