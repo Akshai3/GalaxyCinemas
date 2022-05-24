@@ -20,6 +20,46 @@ date_default_timezone_set('Asia/Kathmandu');
 	<script src='js/example.js'></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+	.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  display: flex;
+  position: relative;
+  
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+ 
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
+
 </head>
 
 <body>
@@ -34,9 +74,17 @@ date_default_timezone_set('Asia/Kathmandu');
 						<li><a href="index.php">Home</a></li>
 						<li><a href="movies_events.php">Movies</a></li>
 						<li><a href="snacks.php">Snacks</a></li>
-						<li><?php if (isset($_SESSION['loginstat'])) {
-								$us = mysqli_query($con, "select * from registration where uid='" . $_SESSION['uid'] . "'");
-								$user = mysqli_fetch_array($us); ?><a href="profile.php"><?php echo $user['uname']; ?></a><a href="logout.php">Logout</a><?php } else { ?><a href="login.php">Login</a><?php } ?></li>
+						<li><div class="dropdown">
+						<img src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png" alt="User Icon" width="50" height="50">
+						
+						<div class="dropdown-content dropdown-menu">
+						<?php if (isset($_SESSION['loginstat'])) {
+										$us = mysqli_query($con, "select * from registration where uid='" . $_SESSION['uid'] . "'");
+										$user = mysqli_fetch_array($us); ?><a href="profile.php"><?php echo $user['uname']; ?></a>
+								<a href="logout.php">Logout</a><?php } 
+								else { ?><a href="login.php">Login</a><?php } ?>
+							</div>
+						</div></li>
 					</ul>
 				</div>
 				<div class="clear"></div>
@@ -75,5 +123,3 @@ date_default_timezone_set('Asia/Kathmandu');
 
 			}
 		</script>
-
-		

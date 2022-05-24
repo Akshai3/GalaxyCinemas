@@ -137,7 +137,7 @@ $movie = mysqli_fetch_array($qry2);
 											<?php echo $snod2['name']; ?>
 										</td>
 										<td>
-											<?php echo $sn['snackName']; ?>
+											<a href="order_print.php"><?php echo $sn['snackName']; ?></a>
 										</td>
 										<td>
 											<?php echo $snod['itemQuantity']; ?>
@@ -152,7 +152,7 @@ $movie = mysqli_fetch_array($qry2);
 											<?php
 											$abcd = $snod['order_id'];
 											if ($snod['orderDate'] < date('Y-m-d')) {
-												echo $query3 = "UPDATE `tbl_snackbook` SET `status`='0' WHERE order_id=$abcd";
+												$query3 = "UPDATE `tbl_snackbook` SET `status`='0' WHERE order_id=$abcd";
 												$qry3 = mysqli_query($con, $query3);
 											?>
 												<i class="glyphicon glyphicon-ok"></i>
