@@ -74,9 +74,9 @@ $movie = mysqli_fetch_array($qry2);
 							<td>
 								<?php
 								for ($i = 0; $i < sizeof($_POST['seat']); $i++) {
-									list($row, $col) = explode('|', $_POST['seat'][$i]);
+									list($row, $col, $type) = explode('|', $_POST['seat'][$i]);
 									$rowName = chr(65 + $row - 1);
-									echo "<p>" . $rowName . $col . " </p>";
+									echo "<p>" . $type . ": " . $rowName . $col . " </p>";
 								?>
 
 
@@ -93,7 +93,7 @@ $movie = mysqli_fetch_array($qry2);
 							</td>
 							<td id="amount" style="font-weight:bold;font-size:18px">
 
-								Rs <?php echo $screen['charge']; ?>
+								Rs <?php echo $_POST['submit']; ?>
 							</td>
 						</tr>
 						<tr>

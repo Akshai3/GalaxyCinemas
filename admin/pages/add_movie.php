@@ -63,7 +63,7 @@ include('header.php');
               <?php $frm->validate("video",array("label"=>"Image","max"=>"500")); // Validating form using form builder written in form.php ?>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-success">Add Movie</button>
+              <button type="submit" name="loginbt" class="btn btn-success">Add Movie</button>
             </div>
           </form>
         </div> 

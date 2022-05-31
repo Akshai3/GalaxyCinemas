@@ -39,11 +39,11 @@
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input name="Password" type="password" size="25" placeholder="Password" class="form-control" />
+        <input name="Password" name="loginbt" type="password" size="25" placeholder="Password" class="form-control" />
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group">
-          <button type="submit" class="btn btn-danger">Login</button>
+          <button type="submit" name="loginbt" class="btn btn-danger">Login</button>
       </div>
     </form>
 

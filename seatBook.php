@@ -124,7 +124,7 @@
         $seatType =  $houseInfo["type_name"];
         $postition = $houseInfo["position"];
         if ($postition == '1') {
-          $query3 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = '1' AND screen_id='" . $_SESSION['screen_id'] . "' ";
+          $query3 = "SELECT sty_id,scRow,scCol,type_name,charge FROM `tbl_screentype` WHERE position = '1' AND screen_id='" . $_SESSION['screen_id'] . "' ";
           $record3 = mysqli_query($con, $query3);
           if (mysqli_num_rows($record3) > 0) {
             while ($row = mysqli_fetch_array($record3)) {
@@ -164,7 +164,8 @@
                       print "Sold " . $rowName . $i;
                     } else {
                       echo "<div class='ticketing-col'>";
-                      print "<input type='checkbox'  class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "'>";
+                      echo '<input type="hidden" class="rate" value="' . $row['charge'] . '">';
+                      print "<input type='checkbox'  class='checkbox' name='seat[]' value='" . $row['scRow'] . "|" . $i . "|" . $row['type_name'] . "'>";
                       print $rowName . $i;
                     }
                     echo "</div>";
@@ -180,7 +181,7 @@
           }
         }
         if ($postition == 2) {
-          $query2 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = 2 AND screen_id='" . $_SESSION['screen_id'] . "' ";
+          $query2 = "SELECT sty_id,scRow,scCol,type_name,charge FROM `tbl_screentype` WHERE position = 2 AND screen_id='" . $_SESSION['screen_id'] . "' ";
           $record2 = mysqli_query($con, $query2);
           if (mysqli_num_rows($record2) > 0) {
             while ($rowN = mysqli_fetch_array($record2)) {
@@ -220,7 +221,8 @@
                       print "Sold " . $rowName . $i;
                     } else {
                       echo "<div class='ticketing-col'>";
-                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowN['scRow'] . "|" . $i . "'>";
+                      echo '<input type="hidden" class="rate" value="' . $rowN['charge'] . '">';
+                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowN['scRow'] . "|" . $i . "|" . $rowN['type_name'] . "'>";
                       print $rowName . $i;
                     }
                     echo "</div>";
@@ -232,12 +234,12 @@
                   </div>
               </div>
 
-      <?php
+            <?php
             }
           }
         }
         if ($postition == 3) {
-          $query2 = "SELECT sty_id,scRow,scCol,type_name FROM `tbl_screentype` WHERE position = 3 AND screen_id='" . $_SESSION['screen_id'] . "' ";
+          $query2 = "SELECT sty_id,scRow,scCol,type_name,charge FROM `tbl_screentype` WHERE position = 3 AND screen_id='" . $_SESSION['screen_id'] . "' ";
           $record2 = mysqli_query($con, $query2);
           if (mysqli_num_rows($record2) > 0) {
             while ($rowG = mysqli_fetch_array($record2)) {
@@ -277,7 +279,8 @@
                       print "Sold " . $rowName . $i;
                     } else {
                       echo "<div class='ticketing-col'>";
-                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowG['scRow'] . "|" . $i . "'>";
+                      echo '<input type="hidden" class="rate" value="' . $rowG['charge'] . '">';
+                      print "<input type='checkbox' class='checkbox' name='seat[]' value='" . $rowG['scRow'] . "|" . $i . "|" . $rowG['type_name'] . "'>";
                       print $rowName . $i;
                     }
                     echo "</div>";
@@ -377,6 +380,23 @@
       }
     }
   </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+      var totalrate = 0;
+      $('.checkbox').on('change', function() {
+        if (this.checked) {
+          totalrate += parseInt($(this).parent().find('.rate').val());
+        } else {
+          totalrate -= parseInt($(this).parent().find('.rate').val());
+        }
+        $('#submit').val(totalrate);
+        console.log($('#submit').val());
+      });
+    });
+  </script>
+
+
 </body>
 
 </html>
