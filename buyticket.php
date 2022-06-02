@@ -98,9 +98,9 @@ $movie = mysqli_fetch_array($qry2);
 						</tr>
 						<tr>
 							<td colspan="2">
-								<button class="btn btn-info" style="width:100%">Book Now</button>
+								<button class="btn btn-info" id="payment" style="width:100%">Book Now</button>
 
-								</form>
+
 							</td>
 						</tr>
 						<table>
@@ -115,6 +115,9 @@ $movie = mysqli_fetch_array($qry2);
 		</div>
 	</div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <?php include('footer.php'); ?>
 <script type="text/javascript">
 	$('#seats').change(function() {
@@ -122,5 +125,33 @@ $movie = mysqli_fetch_array($qry2);
 		amount = charge * $(this).val();
 		$('#amount').html("Rs " + amount);
 		$('#hm').val(amount);
+	});
+</script>
+<script>
+	$("#payment").click(function() {
+		var options = {
+			"key": "rzp_test_SugKuECyOups8l",
+			"amount": amount,
+			"currency": "INR",
+			"name": "Travello",
+			"description": "Test Transaction",
+			"image": "https://image.freepik.com/free-vector/logo-sample-text_355-558.jpg",
+			"handler": function(response) {
+				$.ajax({
+					type: 'post',
+					url: 'complete_payment.php',
+					data: {
+						payment_id: response.razorpay_payment_id,
+					},
+					success: function(result) {
+						console.log(data);
+						window.location.href = " thankyou1.php";
+					}
+				});
+
+			}
+		};
+		var rzp1 = new Razorpay(options);
+		rzp1.open();
 	});
 </script>
