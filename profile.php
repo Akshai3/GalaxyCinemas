@@ -15,7 +15,7 @@ $movie = mysqli_fetch_array($qry2);
 					<h3 style="color:black;" class="text-center">BOOKING HISTORY</h3>
 					<?php include('msgbox.php'); ?>
 					<?php
-					$bk = mysqli_query($con, "select * from tbl_bookings where user_id='" . $_SESSION['uid'] . "'");
+					$bk = mysqli_query($con, "select * from tbl_bookings where user_id='" . $_SESSION['uid'] . "' GROUP BY ticket_id;");
 					if (mysqli_num_rows($bk)) {
 					?>
 						<table class="table table-bordered">
@@ -40,7 +40,18 @@ $movie = mysqli_fetch_array($qry2);
 									$tt = mysqli_query($con, "select * from tbl_theatre where id='" . $bkg['t_id'] . "'");
 									$thr = mysqli_fetch_array($tt);
 									$st = mysqli_query($con, "select * from tbl_show_time where st_id=(select st_id from tbl_shows where s_id='" . $bkg['show_id'] . "')");
-									$stm = mysqli_fetch_array($st)
+									$stm = mysqli_fetch_array($st);
+									$selectSeatNumberSql = "select seatNumber,seatType from tbl_bookings where ticket_id='" . $bkg['ticket_id'] . "'";
+									$selectSeatNumberResult = mysqli_query($con, $selectSeatNumberSql);
+									$seatNumber = "";
+									$seatType = "";
+									while ($selectSeatNumberRow = mysqli_fetch_array($selectSeatNumberResult)) {
+										$seatNumber .= $selectSeatNumberRow['seatType'] . ":" .$selectSeatNumberRow['seatNumber'] . ",";
+									}
+									$seatNumber = rtrim($seatNumber, ",");
+
+									
+
 								?>
 									<tr>
 										<td>
@@ -63,7 +74,7 @@ $movie = mysqli_fetch_array($qry2);
 										</td>
 
 										<td>
-											<?php echo $bkg['no_seats']; ?>
+											<?php echo $seatNumber; ?>
 										</td>
 										<td>
 											Rs. <?php echo $bkg['amount']; ?>

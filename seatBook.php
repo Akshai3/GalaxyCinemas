@@ -129,15 +129,16 @@
           if (mysqli_num_rows($record3) > 0) {
             while ($row = mysqli_fetch_array($record3)) {
               $row['scRow'] . ', ' . $row['scCol'];
-              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $query4 = "SELECT * FROM tbl_bookings WHERE seatType='Diamond' AND show_id='" . $_SESSION['sid'] . "'";
               $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
               $seatsOccupied;
               $numberOfSeatsOccupied = 0;
               while ($row1 = mysqli_fetch_array($record4)) {
-                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
-                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row1['seatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row1['seatCol'];
                 $numberOfSeatsOccupied++;
               } ?>
+              
               <div class="head2">
                 <h4><?php echo $row['type_name']; ?></h4>
               </div>
@@ -186,13 +187,13 @@
           if (mysqli_num_rows($record2) > 0) {
             while ($rowN = mysqli_fetch_array($record2)) {
               $rowN['scRow'] . ', ' . $rowN['scCol'];
-              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $query4 = "SELECT * FROM tbl_bookings WHERE seatType='Platinum' AND show_id='" . $_SESSION['sid'] . "'";
               $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
               $seatsOccupied;
               $numberOfSeatsOccupied = 0;
-              while ($row1 = mysqli_fetch_array($record4)) {
-                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
-                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+              while ($row2 = mysqli_fetch_array($record4)) {
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row2['seatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row2['seatCol'];
                 $numberOfSeatsOccupied++;
               } ?>
               <div class="head1">
@@ -244,13 +245,13 @@
           if (mysqli_num_rows($record2) > 0) {
             while ($rowG = mysqli_fetch_array($record2)) {
               $rowG['scRow'] . ', ' . $rowG['scCol'];
-              $query4 = "SELECT * FROM tbl_bookings WHERE show_id='" . $_SESSION['sid'] . "'";
+              $query4 = "SELECT * FROM tbl_bookings WHERE seatType='Gold' AND show_id='" . $_SESSION['sid'] . "'";
               $record4 = mysqli_query($con, $query4) or die("Query Error!" . mysqli_error($con));
               $seatsOccupied;
               $numberOfSeatsOccupied = 0;
-              while ($row1 = mysqli_fetch_array($record4)) {
-                $seatsOccupied[$numberOfSeatsOccupied][0] = $row['SeatRow'];
-                $seatsOccupied[$numberOfSeatsOccupied][1] = $row['SeatCol'];
+              while ($row3 = mysqli_fetch_array($record4)) {
+                $seatsOccupied[$numberOfSeatsOccupied][0] = $row3['seatRow'];
+                $seatsOccupied[$numberOfSeatsOccupied][1] = $row3['seatCol'];
                 $numberOfSeatsOccupied++;
               } ?>
               <div class="head1">

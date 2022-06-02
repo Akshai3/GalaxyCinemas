@@ -385,3 +385,38 @@ input[type=text], input[type=password]
 }
 
 */
+section {
+    box-sizing: border-box;
+    margin: 1rem -4rem;
+    padding: 0 1rem 1rem 0;
+    background: #f7f7f7;
+    color: #282828;
+    border: 2px solid #000;
+  }
+  
+  section p {
+    padding: 0 2rem;
+    color: #282828;
+  }
+  
+  .view-comment {
+    float:none;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  
+  .form-button {
+    cursor: pointer;
+    padding: 0 1.875rem;
+    width: 100%;
+    font-size: 0.75rem;
+    background: #f71111;
+    color: #fff;
+    font-style: italic;
+  }
+  
+  .form-button:hover, .two-button-one:hover {
+    background: #282828;
+    border: 1px solid #fff;
+  }

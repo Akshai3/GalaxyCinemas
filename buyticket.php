@@ -26,6 +26,7 @@ $movie = mysqli_fetch_array($qry2);
 							</td>
 							<td>
 								<?php echo $theatre['name'] . ", " . $theatre['place']; ?>
+								<input type="hidden" id="theaterId" value="<?php echo $shw['theatre_id'];?>">
 							</td>
 						</tr>
 						<tr>
@@ -44,6 +45,9 @@ $movie = mysqli_fetch_array($qry2);
 								echo $screen['screen_name'];
 
 								?>
+								<input type="hidden" id="showId" value="<?php echo $_SESSION['show'];?>">
+								<input type="hidden" id="screenId" value="<?php echo $ttme['screen_id'];?>">
+								<input type="hidden" id="showTime" value="<?php echo $shw['st_id'];?>">
 							</td>
 						</tr>
 
@@ -55,7 +59,17 @@ $movie = mysqli_fetch_array($qry2);
 								<?php
 
 								echo sizeof($_POST['seat']);
+								
 								?>
+								<input type="hidden" name="seatCount" id="seatCount" value="<?php echo sizeof($_POST['seat']) ?>">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Show Date
+							</td>
+							<td>
+								<?php echo date('d-M-Y', strtotime($_SESSION['ticketDate'])); ?>
 							</td>
 						</tr>
 						<tr>
@@ -77,10 +91,11 @@ $movie = mysqli_fetch_array($qry2);
 									list($row, $col, $type) = explode('|', $_POST['seat'][$i]);
 									$rowName = chr(65 + $row - 1);
 									echo "<p>" . $type . ": " . $rowName . $col . " </p>";
+									$seatNumber = $rowName . $col;
 								?>
 
-
-									<input type="hidden" name="seat[]" value="<?php echo $_POST['seat'][$i] ?>">
+									<input type="hidden" name="seats" id="seats" value="<?php echo $row.'|'.$col.'|'.$type.'|'.$seatNumber; ?>">
+									
 
 								<?php
 								}
@@ -94,6 +109,7 @@ $movie = mysqli_fetch_array($qry2);
 							<td id="amount" style="font-weight:bold;font-size:18px">
 
 								Rs <?php echo $_POST['submit']; ?>
+								<input type="hidden" name="totalRate" id="totalRate" value="<?php echo $_POST['submit']; ?>">
 							</td>
 						</tr>
 						<tr>
@@ -115,37 +131,50 @@ $movie = mysqli_fetch_array($qry2);
 		</div>
 	</div>
 </div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<?php include('footer.php'); ?>
-<script type="text/javascript">
-	$('#seats').change(function() {
-		var charge = <?php echo $screen['charge']; ?>;
-		amount = charge * $(this).val();
-		$('#amount').html("Rs " + amount);
-		$('#hm').val(amount);
-	});
-</script>
+
+
+
 <script>
+	let seatArr = [];
+	let amount = $('#totalRate').val();
+	let theaterId = $('#theaterId').val();
+	let screenId = $('#screenId').val();
+	let showId = $('#showId').val();
+	let seatCount = $('#seatCount').val();
+	let showTime = $('#showTime').val();
+
+	$("input[name='seats']").each(function(){
+		 seatArr.push(this.value);
+        });
+		console.log(seatArr);
 	$("#payment").click(function() {
 		var options = {
 			"key": "rzp_test_SugKuECyOups8l",
-			"amount": amount,
+			"amount": amount*100,
 			"currency": "INR",
-			"name": "Travello",
+			"name": "Galaxy Cinemas",
 			"description": "Test Transaction",
 			"image": "https://image.freepik.com/free-vector/logo-sample-text_355-558.jpg",
 			"handler": function(response) {
 				$.ajax({
 					type: 'post',
-					url: 'complete_payment.php',
+					url: 'ticketPayment.php',
 					data: {
 						payment_id: response.razorpay_payment_id,
+						seats: seatArr,
+						theaterId: theaterId,
+						screenId: screenId,
+						showId: showId,
+						amount: amount,
+						seatCount: seatCount,
+						showTime: showTime
 					},
 					success: function(result) {
-						console.log(data);
-						window.location.href = " thankyou1.php";
+						alert(result);
+						window.location.href = " profile.php";
 					}
 				});
 
@@ -155,3 +184,6 @@ $movie = mysqli_fetch_array($qry2);
 		rzp1.open();
 	});
 </script>
+
+<?php include('footer.php'); ?>
+
