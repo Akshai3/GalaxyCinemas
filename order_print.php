@@ -1,125 +1,101 @@
-<?php 
-error_reporting(0);
-if (isset($_SESSION['loginstat'])) {
-	header('location:Login.php');
-}
-$qry2 = mysqli_query($con, "select * from tbl_movie where movie_id='" . $_SESSION['movie'] . "'");
-$movie = mysqli_fetch_array($qry2);
+<?php
+session_start();
+include('connect.php');
+
+
+$qry2 = mysqli_query($con, "select * from tbl_snackbook where order_id= '".$_GET['id2']."' ");
+$rec = mysqli_fetch_array($qry2);
+$orderid = $rec['order_id'];
+$uid=$rec['user_id'];
+$snackid=$rec['snackId'];
+
+$qry3 = mysqli_query($con, "select * from tbl_snacks where snackId= '$snackid' ");
+$rec3 = mysqli_fetch_array($qry3);
+$snackname=$rec3['snackName'];
+
+$qry4 = mysqli_query($con, "select * from registration where uid= '$uid' ");
+$rec4 = mysqli_fetch_array($qry4);
+$name=$rec4['uname'];
 ?>
 <div class="content">
 	<div class="wrap">
 		<div class="content-top">
 			<div class="section group">
 
+				<div id='DivIdToPrint'>
 
-      
-		<form method='post' action='invoice-result.php'>
-			<table>
-				<tr>
-					<td>Date</td>
-					<td> <input type='text' name='date' /> </td>
-				</tr>
-				<tr>
-					<td>ID</td>
-					<td> <input type='text' name='id' /> </td>
-				</tr>
-				<tr>
-					<td>Customer ID</td>
-					<td> <input type='text' name='custId' /> </td>
-				</tr>
-				<tr>
-					<td colspan=2>
-					<b>Bill to</b>
-					</td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td> <input type='text' name='name' /> </td>
-				</tr>
-				<tr>
-					<td>Company</td>
-					<td> <input type='text' name='company' /> </td>
-				</tr>
-				<tr>
-					<td>Address</td>
-					<td> <input type='text' name='address' /> </td>
-				</tr>
-				<tr>
-					<td>Phone</td>
-					<td> <input type='text' name='phone' /> </td>
-				</tr>
-				<tr>
-					<td colspan=2>
-					<b>Item 1</b>
-					</td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td> <input type='text' name='item1name' /> </td>
-				</tr>
-				<tr>
-					<td>Taxable</td>
-					<td> <input type='text' name='item1tax' /> </td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td> <input type='text' name='item1amount' /> </td>
-				</tr>
-				<tr>
-					<td colspan=2>
-					<b>Item 2</b>
-					</td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td> <input type='text' name='item2name' /> </td>
-				</tr>
-				<tr>
-					<td>Taxable</td>
-					<td> <input type='text' name='item2tax' /> </td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td> <input type='text' name='item2amount' /> </td>
-				</tr>
-				<tr>
-					<td colspan=2>
-					<b>Item 3</b>
-					</td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td> <input type='text' name='item3name' /> </td>
-				</tr>
-				<tr>
-					<td>Taxable</td>
-					<td> <input type='text' name='item3tax' /> </td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td> <input type='text' name='item3amount' /> </td>
-				</tr>
-				<tr>
-					<td colspan=2>
-					<input type=submit value='Generate' />
-					</td>
-				</tr>
-			</table>
-		</form>
-	
+					
+						<table>
+							<tr>
+								<td>Date</td>
+								<td> <input type='text' name='date' value="<?php echo (new DateTime())->format('Y-m-d'); ?>" readonly> </td>
+							</tr>
+							<tr>
+								<td>Customer ID</td>
+								<td> <input type='text' name='custId' value="<?php echo $uid = $rec['user_id']; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td colspan=2>
+									<b>Bill to</b>
+								</td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td> <input type='text' name='name' value="<?php echo $name; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td>Phone</td>
+								<td> <input type='text' name='phone' value="<?php echo $rec4['phno']; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td colspan=2>
+									<b>Item </b>
+								</td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td> <input type='text' name='item1name'  value="<?php echo $snackname; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td>Quantity</td>
+								<td> <input type='text' name='item1name'  value="<?php echo $qnt = $rec['itemQuantity']; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td>Amount</td>
+								<td> <input type='text' name='item1amount'  value="<?php echo $rec['amount']; ?>" readonly /> </td>
+							</tr>
+							<tr>
+								<td>Date</td>
+								<td> <input type='text' name='date' value="<?php echo $rec['orderDate']; ?>"  readonly> </td>
+							</tr>
+				
+				</table>
+				</div>
+				<input type=button id='btn' value='Print' onclick='printDiv();'readonly />
 
-                
-            </div>
+
+
+			</div>
 			<div class="clear"></div>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	$('#seats').change(function() {
-		var charge = <?php echo $screen['charge']; ?>;
-		amount = charge * $(this).val();
-		$('#amount').html("Rs " + amount);
-		$('#hm').val(amount);
-	});
+function printDiv() 
+{
+
+  var divToPrint=document.getElementById('DivIdToPrint');
+
+  var newWin=window.open('','Print-Window');
+
+  newWin.document.open();
+
+  newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+
+  newWin.document.close();
+
+  setTimeout(function(){newWin.close();},10);
+
+}
 </script>

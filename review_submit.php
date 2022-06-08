@@ -2,7 +2,6 @@
 
 
 require('connect.php');
-$Fil = $_SESSION['movie_id'];
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -90,11 +89,11 @@ $Fil = $_SESSION['movie_id'];
                     
                      $ticket_id = $_SESSION['id'];
                     $comment = $_POST['comment'];
-                    $Fil = $_POST['movie'];
+                    $Fil = $_POST['movn'];
                     
                     
                     $rating = $_POST['rating'];
-                    $query = "INSERT INTO tbl_review(movieId, ticket_id ,userId, comment, user_rating) VALUES ('$Fil','$ticket_id', '$username', '$comment', '$rating')";
+                    echo $query = "INSERT INTO tbl_review(movieId, ticket_id ,userId, comment, user_rating) VALUES ('$Fil','$ticket_id', '$username', '$comment', '$rating')";
                     mysqli_query($con, $query) or die("Query Error!" . mysqli_error($con));
                 ?>
                     <center>
@@ -126,7 +125,7 @@ $Fil = $_SESSION['movie_id'];
 
 
 
-                            <a href="about.php"><button class="form-button" id="submit" name="submit">Back</button></a>
+                            <a href="movies_events.php"><button class="form-button" id="submit" name="submit">Back</button></a>
 
                             </div>
                         </div>

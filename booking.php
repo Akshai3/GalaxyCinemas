@@ -73,11 +73,12 @@ $movie = mysqli_fetch_array($qry2);
 								$_SESSION['tid'] = $theatre['id'];
 								$_SESSION['stid'] = $ttme['st_id'];
 								$_SESSION['screen_id'] = $screen['screen_id'];
-					
+
 								if (isset($_GET['date'])) {
 									$date = $_GET['date'];
 									$_SESSION['ticketDate'] = $_GET['date'];
 								} else {
+									$_SESSION['ticketDate']=date('Y-m-d');
 									if ($shw['start_date'] > date('Y-m-d')) {
 										$date = date('Y-m-d', strtotime($shw['start_date'] . "-1 days"));
 									} else {

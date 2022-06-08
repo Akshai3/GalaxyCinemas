@@ -238,7 +238,7 @@ include('header.php');
                             </h4> 
                        </div> 
                        <div class="modal-body"> 
-                           <div class="form-group">
+                       <div class="form-group">
                        	     <label class="control-label">Select Screen</label>
                        	     <select name="box_id" class="form-control" id="screen">
                               <option value="0">Select Screen</option>

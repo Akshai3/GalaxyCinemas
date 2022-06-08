@@ -1,8 +1,7 @@
 <?php
 include('header.php');
 require('connect.php');
-$mid=$_SESSION['id'];
-
+$mn=$_SESSION['movie_name'];
 ?>
 
 <html>
@@ -31,7 +30,7 @@ $mid=$_SESSION['id'];
             <div class="content-top">
                 <div class="section group">
                     <?php
-                    $query = "SELECT * FROM tbl_review WHERE `movieId`='$mid' ";
+                    $query = "SELECT * FROM tbl_review WHERE `movieId`='$mn' ";
                     $result = mysqli_query($con, $query) or die('Failed to query ' . mysqli_error($con));
 
                     while ($row = mysqli_fetch_array($result)) {

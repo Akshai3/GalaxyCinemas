@@ -1,7 +1,7 @@
 <?php include('header.php');
 
 $mid = $_SESSION['movie_id'];
-echo $movie = $_SESSION['movie_name'];
+$movie = $_SESSION['movie_name'];
 if (!isset($_SESSION['loginstat'])) {
     header('location:Login.php');
 }
@@ -110,25 +110,25 @@ if (!isset($_SESSION['loginstat'])) {
                                         </td>
                                         <td>
 
-                                            <?php 
+                                            <?php
                                             $bok;
                                             $query3 = "SELECT * FROM `tbl_bookings` WHERE `ticket_id`='$bok' ";
-                                            $record3= mysqli_query($con, $query3);
-                                            $row3=mysqli_fetch_array($record3);
-                                            $show=$row3['show_id'];
+                                            $record3 = mysqli_query($con, $query3);
+                                            $row3 = mysqli_fetch_array($record3);
+                                            $show = $row3['show_id'];
 
                                             $query = "SELECT * FROM `tbl_shows` WHERE `s_id`='$show' ";
                                             $record = mysqli_query($con, $query);
                                             $filmInfo = mysqli_fetch_array($record);
-                                            $fil=$filmInfo['movie_id'];
+                                            $fil = $filmInfo['movie_id'];
 
                                             $query4 = "SELECT * FROM `tbl_movie` WHERE `movie_id`='$fil' ";
                                             $record4 = mysqli_query($con, $query4);
                                             $filmInfo4 = mysqli_fetch_array($record4);
-                                            echo $Fname=$filmInfo4['movie_name'];
+                                            echo $Fname = $filmInfo4['movie_name'];
                                             ?>
 
-<input type="text" name="movie"  value="<?php echo $Fname;?>" hidden>
+                                            <input type="hidden" id="movn" name="movn" value="<?php echo $Fname; ?>">
 
                                         </td>
                                     </tr>
