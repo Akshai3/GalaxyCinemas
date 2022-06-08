@@ -1,5 +1,6 @@
 <?php include('header.php');
 error_reporting(0);
+$un = $_SESSION['un'];
 if (!isset($_SESSION['loginstat'])) {
 	header('location:Login.php');
 }
@@ -10,7 +11,7 @@ $movie = mysqli_fetch_array($qry2);
 	<div class="wrap">
 		<div class="content-top">
 			<div class="section group">
-				
+
 				<div class="about span_1_of_2">
 					<h3 style="color:black;" class="text-center">BOOKING HISTORY</h3>
 					<?php include('msgbox.php'); ?>
@@ -35,6 +36,7 @@ $movie = mysqli_fetch_array($qry2);
 								while ($bkg = mysqli_fetch_array($bk)) {
 									$m = mysqli_query($con, "select * from tbl_movie where movie_id=(select movie_id from tbl_shows where s_id='" . $bkg['show_id'] . "')");
 									$mov = mysqli_fetch_array($m);
+									$mid = $_SESSION['movie_id'] = $mov['movie_id'];
 									$s = mysqli_query($con, "select * from tbl_screens where screen_id='" . $bkg['screen_id'] . "'");
 									$srn = mysqli_fetch_array($s);
 									$tt = mysqli_query($con, "select * from tbl_theatre where id='" . $bkg['t_id'] . "'");
@@ -46,19 +48,19 @@ $movie = mysqli_fetch_array($qry2);
 									$seatNumber = "";
 									$seatType = "";
 									while ($selectSeatNumberRow = mysqli_fetch_array($selectSeatNumberResult)) {
-										$seatNumber .= $selectSeatNumberRow['seatType'] . ":" .$selectSeatNumberRow['seatNumber'] . ",";
+										$seatNumber .= $selectSeatNumberRow['seatType'] . ":" . $selectSeatNumberRow['seatNumber'] . ",";
 									}
 									$seatNumber = rtrim($seatNumber, ",");
 
-									
+
 
 								?>
 									<tr>
 										<td>
-											<?php echo $bkg['ticket_id']; ?>
+											<?php echo $bk2=$bkg['ticket_id']; ?>
 										</td>
 										<td>
-											<?php echo $mov['movie_name']; ?>
+											<?php echo $movie = $_SESSION['movie_name'] = $mov['movie_name']; ?>
 										</td>
 										<td>
 											<?php echo $thr['name']; ?>
@@ -87,6 +89,20 @@ $movie = mysqli_fetch_array($qry2);
 												$qry2 = mysqli_query($con, $query);
 											?>
 												<i class="glyphicon glyphicon-ok"></i>
+
+												<?php
+												$un;
+												$sql5 = ("SELECT * FROM `tbl_review` WHERE ticket_id='$bk2' ");
+												$result5 = mysqli_query($con, $sql5);
+												$row5 = mysqli_fetch_array($result5);
+												if ($row5 == "") {?>
+													<a href='review.php?id=<?php echo $bkg['ticket_id'];?>'>Review</a>
+												<?php
+												} else {
+													echo "<a href='#'>Reviewed</a>";
+												}
+												?>
+												<!-- <a href="review.php">Review</a> -->
 											<?php
 											} else { ?>
 												<a href="cancel.php?id=<?php echo $bkg['book_id']; ?>" style="text-decoration:none; color:red;">Cancel</a>

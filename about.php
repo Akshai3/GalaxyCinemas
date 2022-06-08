@@ -1,6 +1,7 @@
 <?php include('header.php');
 	$qry2=mysqli_query($con,"select * from tbl_movie where movie_id='".$_GET['id']."'");
 	$movie=mysqli_fetch_array($qry2);
+	$_SESSION['id']=$_GET['id'];
 	?>
 <div class="content">
 	<div class="wrap">
@@ -17,6 +18,7 @@
 									<p class="p-link" style="font-size:15px"><b>Release Date : </b><?php echo date('d-M-Y',strtotime($movie['release_date'])); ?></p>
 									<p style="font-size:15px"><?php echo $movie['desc']; ?></p>
 									<a href="<?php echo $movie['video_url']; ?>" target="_blank" class="watch_but" style="text-decoration:none;">Watch Trailer</a>
+									<a href="review_view.php" class="watch_but" style="text-decoration:none; margin-left:40%;"> Reviews </a>
 								</div>
 								<div class="clear"></div>
 							</div>

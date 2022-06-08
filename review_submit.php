@@ -2,6 +2,7 @@
 
 
 require('connect.php');
+$Fil = $_SESSION['movie_id'];
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -86,9 +87,14 @@ require('connect.php');
                 <?php
                 if (isset($_SESSION['loginstat'])) {
                     $username = $_SESSION['uname'];
+                    
+                     $ticket_id = $_SESSION['id'];
                     $comment = $_POST['comment'];
-                    $filmid = $_POST['FilmId'];
-                    $query = "INSERT INTO tbl_review(movieId, userId, comment) VALUES ('$filmid', '$username', '$comment')";
+                    $Fil = $_POST['movie'];
+                    
+                    
+                    $rating = $_POST['rating'];
+                    $query = "INSERT INTO tbl_review(movieId, ticket_id ,userId, comment, user_rating) VALUES ('$Fil','$ticket_id', '$username', '$comment', '$rating')";
                     mysqli_query($con, $query) or die("Query Error!" . mysqli_error($con));
                 ?>
                     <center>
@@ -120,7 +126,7 @@ require('connect.php');
 
 
 
-                            <a href="review.php"><button class="form-button" id="submit" name="submit">Back</button></a>
+                            <a href="about.php"><button class="form-button" id="submit" name="submit">Back</button></a>
 
                             </div>
                         </div>
